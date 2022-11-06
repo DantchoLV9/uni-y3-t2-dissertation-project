@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
+import LoadingScreen from '@/components/LoadingScreen'
 
 export default function Home() {
     const { user } = useAuth({ middleware: 'auth' })
@@ -13,7 +14,7 @@ export default function Home() {
 
             {/* Don't load the home page if the user data is not available
             TODO: Add loading animation */}
-            {user && (
+            {user ? (
                 <div className="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
                     <div className="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                         {user ? (
@@ -294,6 +295,8 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
+            ) : (
+                <LoadingScreen />
             )}
         </>
     )
