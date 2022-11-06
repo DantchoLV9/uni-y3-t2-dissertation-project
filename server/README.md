@@ -23,10 +23,16 @@ php artisan key:generate
 ```
 
 -   Set up `.env` variables:
+
     -   `APP_NAME` should be the application name.
     -   `APP_URL` should be the server URL.
     -   `FRONTEND_URL` should be the client URL.
     -   Database variables are self explanatory.
+
+-   Migrate the database
+```bash
+php artisan migrate
+```
 
 ## For production
 
