@@ -39,8 +39,9 @@ const PasswordReset = () => {
     }, [router.query.email])
 
     return (
-        <GuestLayout>
+        <GuestLayout pageTitle="Reset Password">
             <AuthCard
+                displayDisabledMsg={true}
                 logo={
                     <Link href="/">
                         <a>
@@ -81,7 +82,10 @@ const PasswordReset = () => {
                             required
                         />
 
-                        <InputError messages={errors.password} className="mt-2" />
+                        <InputError
+                            messages={errors.password}
+                            className="mt-2"
+                        />
                     </div>
 
                     {/* Confirm Password */}
@@ -101,7 +105,10 @@ const PasswordReset = () => {
                             required
                         />
 
-                        <InputError messages={errors.password_confirmation} className="mt-2" />
+                        <InputError
+                            messages={errors.password_confirmation}
+                            className="mt-2"
+                        />
                     </div>
 
                     <div className="flex items-center justify-end mt-4">

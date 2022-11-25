@@ -2,7 +2,9 @@ import ApplicationLogo from '@/components/ApplicationLogo'
 import Dropdown from '@/components/Dropdown'
 import Link from 'next/link'
 import NavLink from '@/components/NavLink'
-import ResponsiveNavLink, { ResponsiveNavButton } from '@/components/ResponsiveNavLink'
+import ResponsiveNavLink, {
+    ResponsiveNavButton,
+} from '@/components/ResponsiveNavLink'
 import { DropdownButton } from '@/components/DropdownLink'
 import { useAuth } from '@/hooks/auth'
 import { useRouter } from 'next/router'
@@ -16,7 +18,7 @@ const Navigation = ({ user }) => {
     const [open, setOpen] = useState(false)
 
     return (
-        <nav className="bg-white border-b border-gray-100">
+        <nav className="bg-white border-b shadow border-gray-100">
             {/* Primary Navigation Menu */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
@@ -63,7 +65,6 @@ const Navigation = ({ user }) => {
                                     </div>
                                 </button>
                             }>
-
                             {/* Authentication */}
                             <DropdownButton onClick={logout}>
                                 Logout

@@ -1,19 +1,19 @@
 import Navigation from '@/components/Layouts/Navigation'
 import { useAuth } from '@/hooks/auth'
+import Head from 'next/head'
 
-const AppLayout = ({ header, children }) => {
+const AppLayout = ({ pageTitle, children }) => {
     const { user } = useAuth({ middleware: 'auth' })
-
+    const appName = process.env.NEXT_PUBLIC_APP_NAME
     return (
         <div className="min-h-screen bg-gray-100">
-            <Navigation user={user} />
+            <Head>
+                <title>
+                    {pageTitle ? `${appName} - ${pageTitle}` : appName}
+                </title>
+            </Head>
 
-            {/* Page Heading */}
-            <header className="bg-white shadow">
-                <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {header}
-                </div>
-            </header>
+            <Navigation user={user} />
 
             {/* Page Content */}
             <main>{children}</main>

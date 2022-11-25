@@ -1,6 +1,7 @@
 import cameraImage from '../images/camera.jpg'
+import AlertCard from './AlertCard'
 
-const AuthCard = ({ logo, children }) => (
+const AuthCard = ({ logo, displayDisabledMsg, children }) => (
     <>
         {/* TODO: Make the background responsive */}
         <div className="absolute top-0 left-0 w-full h-full bg-no-repeat -z-10 flex overflow-hidden">
@@ -9,6 +10,13 @@ const AuthCard = ({ logo, children }) => (
         </div>
         <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
             <div>{logo}</div>
+
+            {displayDisabledMsg && (
+                <AlertCard type="warning" title={'Warning'}>
+                    Some or all of the functionality on this page may be
+                    disabled during the testing period of the website.
+                </AlertCard>
+            )}
 
             <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {children}

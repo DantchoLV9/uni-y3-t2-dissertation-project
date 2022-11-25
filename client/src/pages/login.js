@@ -16,7 +16,7 @@ const Login = () => {
 
     const { login } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
+        redirectIfAuthenticated: '/',
     })
 
     const [email, setEmail] = useState('')
@@ -47,7 +47,7 @@ const Login = () => {
 
     return (
         <>
-            <GuestLayout>
+            <GuestLayout pageTitle="Login">
                 <AuthCard
                     logo={
                         <Link href="/">

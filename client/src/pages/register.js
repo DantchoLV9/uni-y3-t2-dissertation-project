@@ -12,7 +12,7 @@ import { useState } from 'react'
 const Register = () => {
     const { register } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
+        redirectIfAuthenticated: '/',
     })
 
     const [name, setName] = useState('')
@@ -34,7 +34,7 @@ const Register = () => {
     }
 
     return (
-        <GuestLayout>
+        <GuestLayout pageTitle="Register">
             <AuthCard
                 logo={
                     <Link href="/">
