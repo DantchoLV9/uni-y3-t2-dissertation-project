@@ -112,7 +112,7 @@ const PasswordReset = () => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4">
-                        <Button>Reset Password</Button>
+                        <Button disabled>Reset Password</Button>
                     </div>
                 </form>
             </AuthCard>

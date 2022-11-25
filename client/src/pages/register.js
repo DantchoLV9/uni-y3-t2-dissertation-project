@@ -127,7 +127,9 @@ const Register = () => {
                             </a>
                         </Link>
 
-                        <Button className="ml-4">Register</Button>
+                        <Button disabled className="ml-4">
+                            Register
+                        </Button>
                     </div>
                 </form>
             </AuthCard>
