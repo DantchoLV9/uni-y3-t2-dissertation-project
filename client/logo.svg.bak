@@ -1,6 +1,4 @@
-const ApplicationLogo = props => (
-    <>
-        <svg
+<svg
             version="1.0"
             xmlns="http://www.w3.org/2000/svg"
             width="362.000000pt"
@@ -15,7 +13,3 @@ const ApplicationLogo = props => (
                 <path d="M 1039 1829 L 294 314 L 820 314 L 1340 314 L 1573 765 L 1805 1230 L 2038 765 L 2270 314 L 2790 314 L 3316 314 L 1805 3330 L 1039 1829" />
             </g>
         </svg>
-    </>
-)
-
-export default ApplicationLogo
