@@ -6,7 +6,7 @@ import LoadingScreen from '@/components/LoadingScreen'
 
 export default function Home() {
     const { user } = useAuth({ middleware: 'auth' })
-    const appName = process.env.NEXT_PUBLIC_APP_NAME;
+    const appName = process.env.NEXT_PUBLIC_APP_NAME
     return (
         <>
             <Head>
