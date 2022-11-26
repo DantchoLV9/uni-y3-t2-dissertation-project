@@ -20,7 +20,7 @@ const NotFoundPage = () => (
                 </div>
             </div>
             <Link href="/">
-                <a className="underline text-sm text-gray-600 hover:text-gray-900 mt-5">
+                <a className="underline text-gray-600 hover:text-gray-900 mt-5">
                     Go Home
                 </a>
             </Link>

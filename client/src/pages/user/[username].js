@@ -25,6 +25,9 @@ const UserProfilePage = () => {
                 })
         }
     }, [slug])
+    const editProfileButton = () => {
+        router.push('/edit-profile')
+    }
     return (
         <>
             {user ? (
@@ -70,7 +73,10 @@ const UserProfilePage = () => {
                                         </div>
                                         <div className="text-center">
                                             {userProfile.id === user.id ? (
-                                                <Button>Edit Profile</Button>
+                                                <Button
+                                                    onClick={editProfileButton}>
+                                                    Edit Profile
+                                                </Button>
                                             ) : (
                                                 <Button>Follow</Button>
                                             )}
