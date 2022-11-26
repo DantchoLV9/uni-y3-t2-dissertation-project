@@ -2,7 +2,7 @@ import { useState } from 'react'
 import CrossIcon from '@/images/crossIcon'
 
 /**
- * @param {'primary' | 'info' | 'success' | 'warning' | 'danger'} type - The action to perform
+ * @param {'primary' | 'info' | 'success' | 'warning' | 'danger'} type
  */
 const PrimaryAlert = ({
     dismissible = false,

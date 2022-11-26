@@ -36,6 +36,7 @@ const Register = () => {
     return (
         <GuestLayout pageTitle="Register">
             <AuthCard
+                displayDisabledMsg={true}
                 logo={
                     <Link href="/">
                         <a>
@@ -127,9 +128,7 @@ const Register = () => {
                             </a>
                         </Link>
 
-                        <Button disabled className="ml-4">
-                            Register
-                        </Button>
+                        <Button className="ml-4">Register</Button>
                     </div>
                 </form>
             </AuthCard>
