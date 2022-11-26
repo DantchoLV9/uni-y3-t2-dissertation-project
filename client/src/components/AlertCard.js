@@ -4,7 +4,7 @@ import CrossIcon from '@/images/crossIcon'
 /**
  * @param {'primary' | 'info' | 'success' | 'warning' | 'danger'} type
  */
-const PrimaryAlert = ({
+const AlertCard = ({
     dismissible = false,
     title,
     type = 'primary',
@@ -27,7 +27,7 @@ const PrimaryAlert = ({
         <>
             {dismissed || (
                 <div
-                    className={`${className} w-full sm:max-w-md mt-6 px-6 py-4 ${colors[type].bg} shadow-md overflow-hidden sm:rounded-lg`}
+                    className={`${className} w-full mt-6 px-6 py-4 ${colors[type].bg} shadow-md overflow-hidden sm:rounded-lg`}
                     {...props}>
                     <div className="flex justify-between">
                         {title && (
@@ -51,4 +51,4 @@ const PrimaryAlert = ({
     )
 }
 
-export default PrimaryAlert
+export default AlertCard

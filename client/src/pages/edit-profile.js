@@ -1,17 +1,18 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import { useAuth } from '@/hooks/auth'
 import LoadingScreen from '@/components/LoadingScreen'
-import { useRouter } from 'next/router'
 import Button from '@/components/Button'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import AlertCard from '@/components/AlertCard'
 
 export default function EditProfile() {
     const { user } = useAuth({ middleware: 'auth' })
     const [createdAt, setCreatedAt] = useState()
+    const dateCollectionDisabled =
+        process.env.NEXT_PUBLIC_DISABLE_DATA_COLLECTION === 'true'
     useEffect(() => {
         if (user) {
-            console.log(user.created_at)
             const date = new Date(user.created_at)
             setCreatedAt(
                 date.toLocaleString('default', {
@@ -22,13 +23,22 @@ export default function EditProfile() {
             )
         }
     }, [user])
-
     return (
         <>
             {user ? (
                 <AppLayout pageTitle="Edit Profile">
                     <div className="py-12">
                         <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
+                            {dateCollectionDisabled && (
+                                <AlertCard
+                                    className="mb-5"
+                                    type="warning"
+                                    title={'Warning'}>
+                                    Some or all of the functionality on this
+                                    page may be disabled during the testing
+                                    period of the website.
+                                </AlertCard>
+                            )}
                             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div className="p-6 bg-white border-b border-gray-200">
                                     <h1 className="mb-2">Profile Settings</h1>
@@ -37,14 +47,20 @@ export default function EditProfile() {
                                             <p className="font-bold">Name:</p>
                                             <p>{user.name}</p>
                                         </div>
-                                        <Button disabled>Update</Button>
+                                        <Button
+                                            disabled={dateCollectionDisabled}>
+                                            Update
+                                        </Button>
                                     </div>
                                     <div className="flex justify-between items-center p-5 border">
                                         <div>
                                             <p className="font-bold">Email:</p>
                                             <p>{user.email}</p>
                                         </div>
-                                        <Button disabled>Update</Button>
+                                        <Button
+                                            disabled={dateCollectionDisabled}>
+                                            Update
+                                        </Button>
                                     </div>
                                     <div className="flex justify-between items-center p-5 border">
                                         <div>
@@ -53,7 +69,10 @@ export default function EditProfile() {
                                             </p>
                                             <p>********</p>
                                         </div>
-                                        <Button disabled>Update</Button>
+                                        <Button
+                                            disabled={dateCollectionDisabled}>
+                                            Update
+                                        </Button>
                                     </div>
                                     <div className="flex mt-3">
                                         <div className="flex flex-col justify-center">
@@ -71,7 +90,9 @@ export default function EditProfile() {
                                             <Button
                                                 className=""
                                                 color="danger"
-                                                disabled>
+                                                disabled={
+                                                    dateCollectionDisabled
+                                                }>
                                                 Delete
                                             </Button>
                                         </div>

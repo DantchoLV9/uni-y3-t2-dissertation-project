@@ -13,6 +13,9 @@ import { useState } from 'react'
 const ForgotPassword = () => {
     const { forgotPassword } = useAuth({ middleware: 'guest' })
 
+    const dateCollectionDisabled =
+        process.env.NEXT_PUBLIC_DISABLE_DATA_COLLECTION === 'true'
+
     const [email, setEmail] = useState('')
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
@@ -62,7 +65,9 @@ const ForgotPassword = () => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4">
-                        <Button disabled>Email Password Reset Link</Button>
+                        <Button disabled={dateCollectionDisabled}>
+                            Email Password Reset Link
+                        </Button>
                     </div>
                 </form>
             </AuthCard>

@@ -15,6 +15,9 @@ const Register = () => {
         redirectIfAuthenticated: '/',
     })
 
+    const dateCollectionDisabled =
+        process.env.NEXT_PUBLIC_DISABLE_DATA_COLLECTION === 'true'
+
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -128,7 +131,11 @@ const Register = () => {
                             </a>
                         </Link>
 
-                        <Button className="ml-4">Register</Button>
+                        <Button
+                            disabled={dateCollectionDisabled}
+                            className="ml-4">
+                            Register
+                        </Button>
                     </div>
                 </form>
             </AuthCard>

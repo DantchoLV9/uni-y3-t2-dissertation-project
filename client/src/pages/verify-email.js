@@ -12,6 +12,9 @@ const VerifyEmail = () => {
         redirectIfAuthenticated: '/',
     })
 
+    const dateCollectionDisabled =
+        process.env.NEXT_PUBLIC_DISABLE_DATA_COLLECTION === 'true'
+
     const [status, setStatus] = useState(null)
 
     return (
@@ -40,7 +43,7 @@ const VerifyEmail = () => {
 
                 <div className="mt-4 flex items-center justify-between">
                     <Button
-                        disabled
+                        disabled={dateCollectionDisabled}
                         onClick={() => resendEmailVerification({ setStatus })}>
                         Resend Verification Email
                     </Button>

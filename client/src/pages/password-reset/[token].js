@@ -14,6 +14,9 @@ import { useRouter } from 'next/router'
 const PasswordReset = () => {
     const router = useRouter()
 
+    const dateCollectionDisabled =
+        process.env.NEXT_PUBLIC_DISABLE_DATA_COLLECTION === 'true'
+
     const { resetPassword } = useAuth({ middleware: 'guest' })
 
     const [email, setEmail] = useState('')
@@ -112,7 +115,9 @@ const PasswordReset = () => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4">
-                        <Button disabled>Reset Password</Button>
+                        <Button disabled={dateCollectionDisabled}>
+                            Reset Password
+                        </Button>
                     </div>
                 </form>
             </AuthCard>
