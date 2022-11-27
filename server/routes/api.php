@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,5 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum'])->get('/user-profile-from-slug', [UserController::class, 'getUserProfileFromSlug']);
+
+Route::middleware(['auth:sanctum'])->post('/create-post', [PostController::class, 'createPost']);

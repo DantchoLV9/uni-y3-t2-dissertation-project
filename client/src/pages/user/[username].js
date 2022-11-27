@@ -21,7 +21,6 @@ const UserProfilePage = () => {
                 .catch(error => {
                     console.log(error)
                     router.push('/')
-                    return
                 })
         }
     }, [slug])
@@ -68,7 +67,9 @@ const UserProfilePage = () => {
                                                 <p className="font-bold text-xl text-gray-500">
                                                     Posts
                                                 </p>
-                                                <p className="text-2xl">0</p>
+                                                <p className="text-2xl">
+                                                    {user.posts_amount}
+                                                </p>
                                             </div>
                                         </div>
                                         <div className="text-center">

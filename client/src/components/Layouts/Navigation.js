@@ -9,11 +9,16 @@ import DropdownLink, { DropdownButton } from '@/components/DropdownLink'
 import { useAuth } from '@/hooks/auth'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import Button from '../Button'
 
 const Navigation = ({ user }) => {
     const router = useRouter()
 
     const { logout } = useAuth()
+
+    const uploadButton = () => {
+        router.push('/upload')
+    }
 
     const [open, setOpen] = useState(false)
     return (
@@ -43,7 +48,8 @@ const Navigation = ({ user }) => {
                     </div>
 
                     {/* Settings Dropdown */}
-                    <div className="hidden sm:flex sm:items-center sm:ml-6">
+                    <div className="hidden sm:flex sm:gap-5 sm:items-center sm:ml-6">
+                        <Button onClick={uploadButton}>Upload</Button>
                         <Dropdown
                             align="right"
                             width="48"
