@@ -41,4 +41,10 @@ class PostController extends Controller
 
         return $post;
     }
+
+    public function getPostsByUserId(Request $request) {
+        $userId = $request["id"];
+        $userPosts = Post::where('created_by', $userId)->orderBy('created_at', 'desc')->get();
+        return $userPosts;
+    }
 }

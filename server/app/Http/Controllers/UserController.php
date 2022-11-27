@@ -13,6 +13,7 @@ class UserController extends Controller
         $userProfile = [
             'id' => $targetUser["id"],
             'name' => $targetUser["name"],
+            'posts_amount' => $targetUser['posts_amount']
         ];
         return $userProfile;
     }

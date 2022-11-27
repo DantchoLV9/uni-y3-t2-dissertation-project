@@ -20,6 +20,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Get user profile details from slug
 Route::middleware(['auth:sanctum'])->get('/user-profile-from-slug', [UserController::class, 'getUserProfileFromSlug']);
 
+// Get user posts from user id
+Route::middleware(['auth:sanctum'])->get('/get-posts-by-user-id', [PostController::class, 'getPostsByUserId']);
+
+// Create post
 Route::middleware(['auth:sanctum'])->post('/create-post', [PostController::class, 'createPost']);

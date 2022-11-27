@@ -5,12 +5,15 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import axios from '@/lib/axios'
 import Button from '@/components/Button'
+import Link from 'next/link'
 
 const UserProfilePage = () => {
+    const serverUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const { user } = useAuth({ middleware: 'auth' })
     const router = useRouter()
     const slug = router.query.username
     const [userProfile, setUserProfile] = useState({})
+    const [userPosts, setUserPosts] = useState([])
     useEffect(async () => {
         if (slug !== undefined) {
             axios
@@ -24,6 +27,17 @@ const UserProfilePage = () => {
                 })
         }
     }, [slug])
+    useEffect(async () => {
+        axios
+            .get(`/api/get-posts-by-user-id?id=${userProfile.id}`)
+            .then(results => {
+                console.log(results)
+                setUserPosts(results.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, [userProfile])
     const editProfileButton = () => {
         router.push('/edit-profile')
     }
@@ -32,8 +46,48 @@ const UserProfilePage = () => {
             {user ? (
                 <AppLayout pageTitle={`${user.name}'s Profile`}>
                     <div className="py-12">
-                        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                            <div className="w-3/4"></div>
+                        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-center items-start gap-3">
+                            <div className="w-full grid grid-cols-3 gap-3">
+                                {userPosts.map(post => {
+                                    console.log(post)
+                                    return (
+                                        <Link href={`/post/${post.slug}`}>
+                                            <a className="relative rounded overflow-hidden group">
+                                                <div className="relative after:content-[''] after:block after:pb-100%">
+                                                    <img
+                                                        className="absolute top-0 bottom-0 left-0 right-0 w-full h-full object-cover object-center"
+                                                        src={`${serverUrl}/user_uploads/${post.image}`}
+                                                    />
+                                                </div>
+                                                <div className="w-full h-full absolute top-0 left-0 invisible group-hover:visible bg-black/30 flex flex-col justify-center items-center gap-5 p-5">
+                                                    <p className="text-white text-2xl font-bold text-center">
+                                                        {`${post.title
+                                                            .split(' ')
+                                                            .splice(0, 10)
+                                                            .join(' ')}${
+                                                            post.title.split(
+                                                                ' ',
+                                                            ).length > 10
+                                                                ? '...'
+                                                                : ''
+                                                        }`}
+                                                    </p>
+                                                    <div className="flex justify-center items-center">
+                                                        <div className="flex flex-col justify-center items-center">
+                                                            <p className="text-white text-xl font-bold">
+                                                                Likes
+                                                            </p>
+                                                            <p className="text-white text-xl font-bold">
+                                                                0
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </Link>
+                                    )
+                                })}
+                            </div>
                             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-1/4 ml-auto">
                                 <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
                                     <div className="flex-shrink-0">
@@ -68,7 +122,7 @@ const UserProfilePage = () => {
                                                     Posts
                                                 </p>
                                                 <p className="text-2xl">
-                                                    {user.posts_amount}
+                                                    {userProfile.posts_amount}
                                                 </p>
                                             </div>
                                         </div>
