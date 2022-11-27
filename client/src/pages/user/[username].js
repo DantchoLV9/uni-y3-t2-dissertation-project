@@ -56,7 +56,7 @@ const UserProfilePage = () => {
                                                 <div className="relative after:content-[''] after:block after:pb-100%">
                                                     <img
                                                         className="absolute top-0 bottom-0 left-0 right-0 w-full h-full object-cover object-center"
-                                                        src={`${serverUrl}/user_uploads/${post.image}`}
+                                                        src={`${serverUrl}/user_uploads/${post.thumbnail}`}
                                                     />
                                                 </div>
                                                 <div className="w-full h-full absolute top-0 left-0 invisible group-hover:visible bg-black/30 flex flex-col justify-center items-center gap-5 p-5">
