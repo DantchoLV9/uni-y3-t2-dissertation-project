@@ -11,7 +11,7 @@ const UserProfilePage = () => {
     const serverUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const { user } = useAuth({ middleware: 'auth' })
     const router = useRouter()
-    const slug = router.query.username
+    const slug = router.query.slug
     const [userProfile, setUserProfile] = useState({})
     const [userPosts, setUserPosts] = useState([])
     useEffect(async () => {
@@ -23,7 +23,7 @@ const UserProfilePage = () => {
                 })
                 .catch(error => {
                     console.log(error)
-                    router.push('/')
+                    router.push('/404')
                 })
         }
     }, [slug])

@@ -35,3 +35,6 @@ Route::middleware(['auth:sanctum'])->post('/create-post', [PostController::class
 
 // Get posts (feed)
 Route::middleware(['auth:sanctum'])->get('/get-posts', [FeedController::class, 'getPosts']);
+
+// Get post from slug
+Route::middleware(['auth:sanctum'])->get('/get-post', [PostController::class, 'getPostBySlug']);

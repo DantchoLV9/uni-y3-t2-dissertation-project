@@ -68,4 +68,11 @@ class PostController extends Controller
         $userPosts = Post::where('created_by', $userId)->orderBy('created_at', 'desc')->get();
         return $userPosts;
     }
+
+    public function getPostBySlug(Request $request) {
+        $slug = $request["slug"];
+        $targetPost = Post::firstWhere('slug', $slug);
+        $targetPost['created_by'] = User::firstWhere('id', $targetPost->created_by);
+        return $targetPost;
+    }
 }

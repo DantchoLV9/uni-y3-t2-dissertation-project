@@ -42,7 +42,7 @@ const PostCard = ({ user, post }) => {
                                     />
                                 </svg>
                             </div>
-                            <Link href={`user/${post.created_by.slug}`}>
+                            <Link href={`/user/${post.created_by.slug}`}>
                                 <a className="text-gray-600 hover:text-gray-900">
                                     {post.created_by.name}
                                 </a>
