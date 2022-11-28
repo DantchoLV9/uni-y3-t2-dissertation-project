@@ -28,15 +28,18 @@ const UserProfilePage = () => {
         }
     }, [slug])
     useEffect(async () => {
-        axios
-            .get(`/api/get-posts-by-user-id?id=${userProfile.id}`)
-            .then(results => {
-                console.log(results)
-                setUserPosts(results.data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        if (userProfile.id) {
+            axios
+                .get(`/api/get-posts-by-user-id?id=${userProfile.id}`)
+                .then(results => {
+                    console.log(results)
+                    //setUserPosts(results.data.data)
+                    setUserPosts(results.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
     }, [userProfile])
     const editProfileButton = () => {
         router.push('/edit-profile')

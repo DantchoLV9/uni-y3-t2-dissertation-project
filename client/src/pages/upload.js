@@ -104,6 +104,7 @@ export default function Home() {
                                                             autoFocus
                                                             disabled={loading}
                                                             value={postTitle}
+                                                            required
                                                             onChange={e => {
                                                                 setPostTitle(
                                                                     e.target

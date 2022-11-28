@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\FeedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 // Get user profile details from slug
 Route::middleware(['auth:sanctum'])->get('/user-profile-from-slug', [UserController::class, 'getUserProfileFromSlug']);
 
+// Get user profile details from id
+Route::middleware(['auth:sanctum'])->get('/user-profile-from-id', [UserController::class, 'getUserProfileFromId']);
+
 // Get user posts from user id
 Route::middleware(['auth:sanctum'])->get('/get-posts-by-user-id', [PostController::class, 'getPostsByUserId']);
 
 // Create post
 Route::middleware(['auth:sanctum'])->post('/create-post', [PostController::class, 'createPost']);
+
+// Get posts (feed)
+Route::middleware(['auth:sanctum'])->get('/get-posts', [FeedController::class, 'getPosts']);

@@ -17,4 +17,16 @@ class UserController extends Controller
         ];
         return $userProfile;
     }
+
+    public function getUserProfileFromId(Request $request)
+    {
+        $id = $request["id"];
+        $targetUser = User::firstWhere('id', $id);
+        $userProfile = [
+            'id' => $targetUser["id"],
+            'name' => $targetUser["name"],
+            'posts_amount' => $targetUser['posts_amount']
+        ];
+        return $userProfile;
+    }
 }

@@ -29,9 +29,6 @@ class PostController extends Controller
 
         // Optimise image
         $optimisedImage = Image::make($image)->orientate()->encode('webp');
-
-        // Create a backup of the image
-        $optimisedImage->backup();
         
         // Store post in database
         $post = Post::create([
@@ -47,9 +44,6 @@ class PostController extends Controller
 
         // Save the image in the public/user_uploads folder (Important: Done after storing the post in the database)
         $optimisedImage->save("user_uploads/" . $imageName);
-
-        // Restore image backup
-        $optimisedImage->reset();
 
         // Create thumbnail
         $imageHeight = $optimisedImage->height();
@@ -70,6 +64,7 @@ class PostController extends Controller
 
     public function getPostsByUserId(Request $request) {
         $userId = $request["id"];
+        //$userPosts = Post::where('created_by', $userId)->orderBy('created_at', 'desc')->paginate();
         $userPosts = Post::where('created_by', $userId)->orderBy('created_at', 'desc')->get();
         return $userPosts;
     }
