@@ -30,7 +30,7 @@ const PostPage = () => {
                 <AppLayout pageTitle={post.title}>
                     <div className="py-12">
                         <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
-                            <PostCard user={user} post={post} />
+                            <PostCard user={user} post={post} page={true} />
                         </div>
                     </div>
                 </AppLayout>

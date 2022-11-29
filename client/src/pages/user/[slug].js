@@ -52,9 +52,10 @@ const UserProfilePage = () => {
                         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-center items-start gap-3">
                             <div className="w-full grid grid-cols-3 gap-3">
                                 {userPosts.map(post => {
-                                    console.log(post)
                                     return (
-                                        <Link href={`/post/${post.slug}`}>
+                                        <Link
+                                            key={`postKey-${post.id}`}
+                                            href={`/post/${post.slug}`}>
                                             <a className="relative rounded overflow-hidden group">
                                                 <div className="relative after:content-[''] after:block after:pb-100%">
                                                     <img
@@ -81,7 +82,7 @@ const UserProfilePage = () => {
                                                                 Likes
                                                             </p>
                                                             <p className="text-white text-xl font-bold">
-                                                                0
+                                                                {post.likes}
                                                             </p>
                                                         </div>
                                                     </div>

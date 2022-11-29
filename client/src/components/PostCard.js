@@ -4,10 +4,17 @@ import OptionsIcon from '@/images/optionsIcon'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import Button from './Button'
+import axios from '@/lib/axios'
 
-const PostCard = ({ user, post }) => {
+const PostCard = ({ user, post, page = false }) => {
     const serverUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const [createdAt, setCreatedAt] = useState()
+    const [likeButtonText, setLikeButtonText] = useState('Like')
+    const [likeButtonApiUrl, setLikeButtonApiUrl] = useState(
+        '/api/like-post?id=',
+    )
+    const [likeLoading, setLikeLoading] = useState(false)
+    const [postContent, setPostContent] = useState(post)
     useEffect(() => {
         if (user) {
             const date = new Date(post.created_at)
@@ -20,7 +27,28 @@ const PostCard = ({ user, post }) => {
             )
         }
     }, [user])
-    console.log(post)
+    const handleLikeButton = () => {
+        setLikeLoading(true)
+        axios
+            .get(`${likeButtonApiUrl}${post.id}`)
+            .then(results => {
+                setPostContent(results.data)
+                setLikeLoading(false)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+    useEffect(() => {
+        if (postContent.liked) {
+            setLikeButtonText('Unlike')
+            setLikeButtonApiUrl('/api/unlike-post?id=')
+        }
+        if (!postContent.liked) {
+            setLikeButtonText('Like')
+            setLikeButtonApiUrl('/api/like-post?id=')
+        }
+    }, [postContent])
     return (
         <>
             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -42,13 +70,13 @@ const PostCard = ({ user, post }) => {
                                     />
                                 </svg>
                             </div>
-                            <Link href={`/user/${post.created_by.slug}`}>
+                            <Link href={`/user/${postContent.created_by.slug}`}>
                                 <a className="text-gray-600 hover:text-gray-900">
-                                    {post.created_by.name}
+                                    {postContent.created_by.name}
                                 </a>
                             </Link>
                         </div>
-                        {user.id !== post.created_by.id ? (
+                        {user.id !== postContent.created_by.id ? (
                             <Button color="primary">Follow</Button>
                         ) : (
                             <button className="flex flex-row gap-2 justify-center items-center hover:bg-gray-200 text-gray-800 rounded-full font-bold">
@@ -57,28 +85,42 @@ const PostCard = ({ user, post }) => {
                         )}
                     </div>
                     <div className="overflow-hidden">
-                        <Link href={`/post/${post.slug}`}>
-                            <a target="_blank" title="Open in new tab">
-                                <img
-                                    src={`${serverUrl}/user_uploads/${post.image}`}
-                                />
-                            </a>
-                        </Link>
+                        {page ? (
+                            <img
+                                src={`${serverUrl}/user_uploads/${postContent.image}`}
+                            />
+                        ) : (
+                            <Link href={`/post/${postContent.slug}`}>
+                                <a target="_blank" title="Open in new tab">
+                                    <img
+                                        src={`${serverUrl}/user_uploads/${postContent.image}`}
+                                    />
+                                </a>
+                            </Link>
+                        )}
                     </div>
                     <div className="p-6 flex flex-col justify-between gap-3">
-                        <p className="font-bold">{post.title}</p>
+                        <p className="font-bold">{postContent.title}</p>
                         <div className="flex items-center justify-between">
                             <p className="text-sm font-bold text-gray-500">
                                 {createdAt}
                             </p>
                             <div className="text-gray-500 font-bold flex items-center justify-center gap-3">
-                                <p>0 Likes</p>
-                                <p>0 Comments</p>
+                                <p>
+                                    {postContent.likes}{' '}
+                                    {postContent.likes === 1 ? 'Like' : 'Likes'}
+                                </p>
+                                <p>{postContent.comments} Comments</p>
                             </div>
                         </div>
                         <div className="w-full flex justify-around items-center">
-                            <button className="flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-200 text-gray-800 py-2 rounded font-bold">
-                                <LikeIcon /> Like
+                            <button
+                                disabled={likeLoading}
+                                onClick={handleLikeButton}
+                                className={`flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-200 text-gray-800 py-2 rounded font-bold ${
+                                    likeLoading && 'opacity-50'
+                                }`}>
+                                <LikeIcon /> {likeButtonText}
                             </button>
                             <button className="flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-200 text-gray-800 py-2 rounded font-bold">
                                 <CommentIcon /> Comment

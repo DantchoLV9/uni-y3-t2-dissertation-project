@@ -38,3 +38,9 @@ Route::middleware(['auth:sanctum'])->get('/get-posts', [FeedController::class, '
 
 // Get post from slug
 Route::middleware(['auth:sanctum'])->get('/get-post', [PostController::class, 'getPostBySlug']);
+
+// Like post
+Route::middleware(['auth:sanctum'])->get('/like-post', [PostController::class, 'likePost']);
+
+// Unlike post
+Route::middleware(['auth:sanctum'])->get('/unlike-post', [PostController::class, 'unlikePost']);

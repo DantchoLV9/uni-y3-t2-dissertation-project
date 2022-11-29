@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\PostLike;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
 use Image;
@@ -70,9 +71,57 @@ class PostController extends Controller
     }
 
     public function getPostBySlug(Request $request) {
+        $user = $request->user();
         $slug = $request["slug"];
         $targetPost = Post::firstWhere('slug', $slug);
-        $targetPost['created_by'] = User::firstWhere('id', $targetPost->created_by);
+        $targetPost['created_by'] = $this->getPostOwner($targetPost);
+        $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
         return $targetPost;
+    }
+
+    public function likePost(Request $request) {
+        $user = $request->user();
+        $postId = $request["id"];
+        $targetPost = Post::firstWhere('id', $postId);
+
+        // Check if post is alredy liked
+        if (!PostLike::where('liked_by', $user->id)->firstWhere('liked_post', $postId)) {
+            PostLike::create([
+                'liked_by' => $user->id,
+                'liked_post' => $postId,
+            ]);
+            $targetPost->likes++;
+            $targetPost->save();
+        }
+        $targetPost['created_by'] = $this->getPostOwner($targetPost);
+        $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
+        
+        return $targetPost;
+    }
+
+    public function unlikePost(Request $request) {
+        $user = $request->user();
+        $postId = $request["id"];
+        $targetPost = Post::firstWhere('id', $postId);
+        $targetPostLike = PostLike::where('liked_by', $user->id)->firstWhere('liked_post', $postId);
+
+        // Check if post liked
+        if ($targetPostLike) {
+            $targetPostLike->delete();
+            $targetPost->likes--;
+            $targetPost->save();
+        }
+        $targetPost['created_by'] = $this->getPostOwner($targetPost);
+        $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
+        
+        return $targetPost;
+    }
+
+    public function isPostLiked($user, $post) {
+        return $targetPost['liked'] = (PostLike::where('liked_by', $user->id)->firstWhere('liked_post', $post->id)) ? true : false;
+    }
+
+    public function getPostOwner($post) {
+        return User::firstWhere('id', $post->created_by);
     }
 }
