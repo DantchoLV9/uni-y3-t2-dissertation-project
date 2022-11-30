@@ -47,10 +47,6 @@ export default function EditProfile() {
                                             <p className="font-bold">Name:</p>
                                             <p>{user.name}</p>
                                         </div>
-                                        <Button
-                                            disabled={dateCollectionDisabled}>
-                                            Update
-                                        </Button>
                                     </div>
                                     <div className="flex justify-between items-center p-5 border">
                                         <div>

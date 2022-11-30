@@ -66,7 +66,7 @@ class PostController extends Controller
     public function deletePost(Request $request) {
         $user = $request->user();
         $postId = $request["id"];
-        $targetPost = $this->getPostById($postId);
+        $targetPost = $this->getPostInstanceById($postId);
         $postOwner = $this->getPostOwner($targetPost);
 
         // Check if deleting own post
@@ -87,11 +87,20 @@ class PostController extends Controller
         $userPosts = Post::where('created_by', $userId)->orderBy('created_at', 'desc')->get();
         return $userPosts;
     }
-
+    
     public function getPostBySlug(Request $request) {
         $user = $request->user();
         $slug = $request["slug"];
         $targetPost = Post::firstWhere('slug', $slug);
+        $targetPost['created_by'] = $this->getPostOwner($targetPost);
+        $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
+        return $targetPost;
+    }
+
+    public function getPostById(Request $request) {
+        $user = $request->user();
+        $id = $request["id"];
+        $targetPost = Post::firstWhere('id', $id);
         $targetPost['created_by'] = $this->getPostOwner($targetPost);
         $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
         return $targetPost;
@@ -143,7 +152,7 @@ class PostController extends Controller
         return User::firstWhere('id', $post->created_by);
     }
 
-    public function getPostById($id) {
+    public function getPostInstanceById($id) {
         $targetPost = Post::firstWhere('id', $id);
         return $targetPost;
     }

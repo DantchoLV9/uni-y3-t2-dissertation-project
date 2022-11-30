@@ -7,6 +7,10 @@ import Popup from 'reactjs-popup'
 import axios from '@/lib/axios'
 import Button from './Button'
 import { useRouter } from 'next/router'
+import Label from './Label'
+import TextArea from './TextArea'
+import InputError from './InputError'
+import PostComment from './PostComment'
 
 const PostCard = ({ user, post, page = false }) => {
     const router = useRouter()
@@ -20,6 +24,12 @@ const PostCard = ({ user, post, page = false }) => {
     const [likeLoading, setLikeLoading] = useState(false)
     const [postContent, setPostContent] = useState(post)
     const [postDeleted, setPostDeleted] = useState(false)
+    const [commentsSectionOpen, setCommentsSectionOpen] = useState(false)
+    const [comment, setComment] = useState('')
+    const [errors, setErrors] = useState([])
+    const [comments, setComments] = useState([])
+    const [commentPostingLoading, setCommentPostingLoading] = useState(false)
+    // Transform date into nice format
     useEffect(() => {
         if (user) {
             const date = new Date(post.created_at)
@@ -32,6 +42,7 @@ const PostCard = ({ user, post, page = false }) => {
             )
         }
     }, [user])
+    // Handle the like/unlike button functionality
     const handleLikeButton = () => {
         setLikeLoading(true)
         axios
@@ -44,6 +55,7 @@ const PostCard = ({ user, post, page = false }) => {
                 console.log(error)
             })
     }
+    // Helps with the like/unlike button API calls & button text changes
     useEffect(() => {
         if (postContent.liked) {
             setLikeButtonText('Unlike')
@@ -54,6 +66,7 @@ const PostCard = ({ user, post, page = false }) => {
             setLikeButtonApiUrl('/api/like-post?id=')
         }
     }, [postContent])
+    // Handle the post delete button
     const handlePostDeleteButton = () => {
         axios
             .get(`/api/delete-post?id=${post.id}`)
@@ -65,6 +78,56 @@ const PostCard = ({ user, post, page = false }) => {
                     setPostDeleted(true)
                     optionsPopUp.current.close()
                 }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+    // Handle the add comment button
+    const handleAddComment = e => {
+        e.preventDefault()
+        setErrors([])
+        const formData = new FormData()
+        formData.append('comment', comment)
+        formData.append('parent_post', postContent.id)
+        setCommentPostingLoading(true)
+        axios
+            .post('/api/create-comment', formData)
+            .then(result => {
+                setCommentPostingLoading(false)
+                console.log(result)
+                getPostComments()
+                setComment('')
+                updatePostData(postContent.id)
+            })
+            .catch(error => {
+                setCommentPostingLoading(false)
+                if (error.response.status !== 422) throw error
+
+                setErrors(error.response.data.errors)
+            })
+    }
+    useEffect(() => {
+        getPostComments()
+    }, [commentsSectionOpen])
+    const getPostComments = () => {
+        if (commentsSectionOpen) {
+            axios
+                .get(`/api/get-post-comments-by-id?id=${postContent.id}`)
+                .then(results => {
+                    console.log(results)
+                    setComments(results.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+    }
+    const updatePostData = postId => {
+        axios
+            .get(`/api/get-post-from-id?id=${postId}`)
+            .then(results => {
+                setPostContent(results.data)
             })
             .catch(error => {
                 console.log(error)
@@ -106,7 +169,7 @@ const PostCard = ({ user, post, page = false }) => {
                             trigger={
                                 <button
                                     aria-label="options menu"
-                                    className="flex flex-row gap-2 justify-center items-center transition duration-150 ease-in-out hover:bg-gray-200 text-gray-800 rounded-full font-bold">
+                                    className="flex flex-row gap-2 justify-center items-center transition duration-150 ease-in-out hover:bg-gray-100 text-gray-800 rounded-full font-bold">
                                     <OptionsIcon />
                                 </button>
                             }
@@ -199,7 +262,9 @@ const PostCard = ({ user, post, page = false }) => {
                         )}
                     </div>
                     <div className="p-6 flex flex-col justify-between gap-3">
-                        <p className="font-bold">{postContent.title}</p>
+                        <p className="font-bold text-gray-800">
+                            {postContent.title}
+                        </p>
                         <div className="flex items-center justify-between">
                             <p className="text-sm font-bold text-gray-500">
                                 {createdAt}
@@ -216,16 +281,84 @@ const PostCard = ({ user, post, page = false }) => {
                             <button
                                 disabled={likeLoading}
                                 onClick={handleLikeButton}
-                                className={`flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-200 text-gray-800 hover:text-rose-600 py-2 rounded font-bold transition duration-150 ease-in-out ${
+                                className={`flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-gray-800 hover:text-violet-600 py-2 rounded font-bold transition duration-150 ease-in-out ${
                                     likeLoading && 'opacity-50'
                                 }`}>
                                 <LikeIcon /> {likeButtonText}
                             </button>
-                            <button className="flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-200 text-gray-800 hover:text-sky-600 py-2 rounded font-bold transition duration-150 ease-in-out">
+                            <button
+                                onClick={() =>
+                                    setCommentsSectionOpen(!commentsSectionOpen)
+                                }
+                                className="flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-gray-800 hover:text-blue-500 py-2 rounded font-bold transition duration-150 ease-in-out">
                                 <CommentIcon /> Comment
                             </button>
                         </div>
                     </div>
+                    {commentsSectionOpen && (
+                        <div className="p-6 flex flex-col justify-between gap-3 border-t-2">
+                            <form
+                                onSubmit={handleAddComment}
+                                className="flex flex-col justify-center">
+                                <Label htmlFor="comment">
+                                    Add your comment
+                                </Label>
+                                <TextArea
+                                    value={comment}
+                                    onChange={e => {
+                                        setComment(e.target.value)
+                                    }}
+                                    id="comment"
+                                    type="text"
+                                    className="block mt-1 w-full"
+                                />
+                                <InputError
+                                    messages={errors.comment}
+                                    className="mt-2"
+                                />
+                                <div className="flex self-end justify-center items-center mt-3">
+                                    {commentPostingLoading && (
+                                        <div role="status">
+                                            <svg
+                                                className="inline mr-2 w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                                viewBox="0 0 100 101"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                    fill="currentColor"
+                                                />
+                                                <path
+                                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                    fill="currentFill"
+                                                />
+                                            </svg>
+                                            <span className="sr-only">
+                                                Loading...
+                                            </span>
+                                        </div>
+                                    )}
+                                    <Button disabled={commentPostingLoading}>
+                                        Comment
+                                    </Button>
+                                </div>
+                            </form>
+                            <div className="flex flex-col justify-center items-start gap-8">
+                                {comments.map(comment => {
+                                    return (
+                                        <PostComment
+                                            key={`post-comment-key-${comment.id}`}
+                                            post={postContent}
+                                            updatePostData={updatePostData}
+                                            getPostComments={getPostComments}
+                                            user={user}
+                                            comment={comment}
+                                        />
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

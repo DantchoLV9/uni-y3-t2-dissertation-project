@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +43,26 @@ Route::middleware(['auth:sanctum'])->get('/get-posts', [FeedController::class, '
 // Get post from slug
 Route::middleware(['auth:sanctum'])->get('/get-post', [PostController::class, 'getPostBySlug']);
 
+// Get post from id
+Route::middleware(['auth:sanctum'])->get('/get-post-from-id', [PostController::class, 'getPostById']);
+
 // Like post
 Route::middleware(['auth:sanctum'])->get('/like-post', [PostController::class, 'likePost']);
 
 // Unlike post
 Route::middleware(['auth:sanctum'])->get('/unlike-post', [PostController::class, 'unlikePost']);
+
+// Add comment
+Route::middleware(['auth:sanctum'])->post('/create-comment', [CommentController::class, 'createComment']);
+
+// Delete comment
+Route::middleware(['auth:sanctum'])->get('/delete-comment', [CommentController::class, 'deleteComment']);
+
+// Get post comments from post id
+Route::middleware(['auth:sanctum'])->get('/get-post-comments-by-id', [CommentController::class, 'getAllCommentsOnPost']);
+
+// Like comment
+Route::middleware(['auth:sanctum'])->get('/like-comment', [CommentController::class, 'likeComment']);
+
+// Unlike comment
+Route::middleware(['auth:sanctum'])->get('/unlike-comment', [CommentController::class, 'unlikeComment']);
