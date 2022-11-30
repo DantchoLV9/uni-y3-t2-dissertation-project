@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('liked_by');
             $table->unsignedBigInteger('liked_post');
             $table->foreign('liked_by')->references('id')->on('users');
-            $table->foreign('liked_post')->references('id')->on('posts');
+            $table->foreign('liked_post')->references('id')->on('posts')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -33,6 +33,9 @@ Route::middleware(['auth:sanctum'])->get('/get-posts-by-user-id', [PostControlle
 // Create post
 Route::middleware(['auth:sanctum'])->post('/create-post', [PostController::class, 'createPost']);
 
+// Create post
+Route::middleware(['auth:sanctum'])->get('/delete-post', [PostController::class, 'deletePost']);
+
 // Get posts (feed)
 Route::middleware(['auth:sanctum'])->get('/get-posts', [FeedController::class, 'getPosts']);
 

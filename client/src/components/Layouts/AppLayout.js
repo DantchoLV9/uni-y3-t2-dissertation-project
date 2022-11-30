@@ -16,7 +16,7 @@ const AppLayout = ({ pageTitle, children }) => {
             <Navigation user={user} />
 
             {/* Page Content */}
-            <main>{children}</main>
+            <main className="tooltipBoundary">{children}</main>
         </div>
     )
 }

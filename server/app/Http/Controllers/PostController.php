@@ -63,6 +63,24 @@ class PostController extends Controller
         return $post;
     }
 
+    public function deletePost(Request $request) {
+        $user = $request->user();
+        $postId = $request["id"];
+        $targetPost = $this->getPostById($postId);
+        $postOwner = $this->getPostOwner($targetPost);
+
+        // Check if deleting own post
+        if ($user->id != $postOwner->id) {
+            return response("Forbidden", 403);
+        }
+        
+        $targetPost->delete();
+        $user->posts_amount--;
+        $user->save();
+
+        return true;
+    }
+
     public function getPostsByUserId(Request $request) {
         $userId = $request["id"];
         //$userPosts = Post::where('created_by', $userId)->orderBy('created_at', 'desc')->paginate();
@@ -123,5 +141,10 @@ class PostController extends Controller
 
     public function getPostOwner($post) {
         return User::firstWhere('id', $post->created_by);
+    }
+
+    public function getPostById($id) {
+        $targetPost = Post::firstWhere('id', $id);
+        return $targetPost;
     }
 }

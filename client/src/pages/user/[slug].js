@@ -63,7 +63,7 @@ const UserProfilePage = () => {
                                                         src={`${serverUrl}/user_uploads/${post.thumbnail}`}
                                                     />
                                                 </div>
-                                                <div className="w-full h-full absolute top-0 left-0 invisible group-hover:visible bg-black/30 flex flex-col justify-center items-center gap-5 p-5">
+                                                <div className="w-full h-full absolute top-0 left-0 invisible group-hover:visible bg-black/50 flex flex-col justify-center items-center gap-5 p-5">
                                                     <p className="text-white text-2xl font-bold text-center">
                                                         {`${post.title
                                                             .split(' ')
