@@ -42,23 +42,24 @@ export default function EditProfile() {
                             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div className="p-6 bg-white border-b border-gray-200">
                                     <h1 className="mb-2">Profile Settings</h1>
-                                    <div className="flex justify-between items-center p-5 border">
+                                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start sm:items-center p-5 border">
                                         <div>
                                             <p className="font-bold">Name:</p>
                                             <p>{user.name}</p>
                                         </div>
                                     </div>
-                                    <div className="flex justify-between items-center p-5 border">
+                                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start sm:items-center p-5 border">
                                         <div>
                                             <p className="font-bold">Email:</p>
                                             <p>{user.email}</p>
                                         </div>
                                         <Button
+                                            className="w-full flex justify-center items-center sm:w-auto"
                                             disabled={dateCollectionDisabled}>
                                             Update
                                         </Button>
                                     </div>
-                                    <div className="flex justify-between items-center p-5 border">
+                                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start sm:items-center p-5 border">
                                         <div>
                                             <p className="font-bold">
                                                 Password:
@@ -66,25 +67,26 @@ export default function EditProfile() {
                                             <p>********</p>
                                         </div>
                                         <Button
+                                            className="w-full flex justify-center items-center sm:w-auto"
                                             disabled={dateCollectionDisabled}>
                                             Update
                                         </Button>
                                     </div>
-                                    <div className="flex mt-3">
-                                        <div className="flex flex-col justify-center">
+                                    <div className="flex flex-col sm:flex-row mt-3 gap-3 sm:gap-0">
+                                        <div className="flex flex-col justify-center text-center sm:text-left">
                                             <p className="font-bold">
                                                 Created:
                                             </p>
                                             <p>{createdAt}</p>
                                         </div>
-                                        <div className="flex justify-center items-center gap-3 ml-auto">
+                                        <div className="flex justify-center items-center gap-3 sm:ml-auto">
                                             <Link href={`/user/${user.slug}`}>
-                                                <a className="underline text-gray-600 hover:text-gray-900">
+                                                <a className="underline text-gray-600 hover:text-gray-900 flex justify-center items-center w-full sm:w-auto">
                                                     Back
                                                 </a>
                                             </Link>
                                             <Button
-                                                className=""
+                                                className="w-full flex justify-center items-center sm:w-auto"
                                                 color="danger"
                                                 disabled={
                                                     dateCollectionDisabled

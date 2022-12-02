@@ -49,8 +49,8 @@ const UserProfilePage = () => {
             {user ? (
                 <AppLayout pageTitle={`${user.name}'s Profile`}>
                     <div className="py-12">
-                        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-center items-start gap-3">
-                            <div className="w-full grid grid-cols-3 gap-3">
+                        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col-reverse sm:flex-row justify-center items-start gap-3">
+                            <div className="w-full grid grid-cols-2 lg:grid-cols-3 gap-3">
                                 {userPosts.map(post => {
                                     return (
                                         <Link
@@ -92,7 +92,7 @@ const UserProfilePage = () => {
                                     )
                                 })}
                             </div>
-                            <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-1/4 ml-auto">
+                            <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full sm:w-1/2 lg:w-1/3 xl:w1/4 ml-auto">
                                 <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
                                     <div className="flex-shrink-0">
                                         <svg
@@ -114,14 +114,14 @@ const UserProfilePage = () => {
                                             {userProfile.name}
                                         </p>
                                         <div className="w-full h-1 bg-gray-200 rounded"></div>
-                                        <div className="flex justify-around items-center">
-                                            <div className="flex flex-col justify-center items-center">
+                                        <div className="flex flex-col xl:flex-row justify-around items-center">
+                                            <div className="flex flex-row w-full xl:w-auto xl:flex-col justify-between xl:justify-center items-center">
                                                 <p className="font-bold text-xl text-gray-500">
                                                     Followers
                                                 </p>
                                                 <p className="text-2xl">0</p>
                                             </div>
-                                            <div className="flex flex-col justify-center items-center">
+                                            <div className="flex flex-row w-full xl:w-auto xl:flex-col justify-between xl:justify-center items-center">
                                                 <p className="font-bold text-xl text-gray-500">
                                                     Posts
                                                 </p>
@@ -133,6 +133,7 @@ const UserProfilePage = () => {
                                         <div className="text-center">
                                             {userProfile.id === user.id ? (
                                                 <Button
+                                                    className="flex justify-center items-center w-full sm:w-auto"
                                                     onClick={editProfileButton}>
                                                     Edit Profile
                                                 </Button>

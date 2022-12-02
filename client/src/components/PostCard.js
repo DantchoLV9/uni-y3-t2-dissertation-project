@@ -265,11 +265,11 @@ const PostCard = ({ user, post, page = false }) => {
                         <p className="font-bold text-gray-800">
                             {postContent.title}
                         </p>
-                        <div className="flex items-center justify-between">
-                            <p className="text-sm font-bold text-gray-500">
+                        <div className="flex items-center justify-between flex-col gap-2 sm:gap-0 sm:flex-row">
+                            <p className="text-sm font-bold text-gray-500 self-start sm:self-center">
                                 {createdAt}
                             </p>
-                            <div className="text-gray-500 font-bold flex items-center justify-center gap-3">
+                            <div className="text-gray-500 font-bold flex items-center justify-start sm:justify-center gap-3 w-full sm:w-auto">
                                 <p>
                                     {postContent.likes}{' '}
                                     {postContent.likes === 1 ? 'Like' : 'Likes'}
