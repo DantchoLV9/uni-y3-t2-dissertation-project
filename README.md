@@ -9,3 +9,6 @@ This repo contains the client & server for the photography social media website.
 - Composer
 - NodeJS
 - MySQL or other database
+
+This website is partialy deployed on a DigitalOcean VPS and the Vercel Hosting service.
+Link to hosted website: https://albor.dantcho.com/
