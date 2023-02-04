@@ -12,6 +12,7 @@ class Post extends Model
     protected $fillable = [
         'title',
         'image',
+        'scrollFeedImg',
         'thumbnail',
         'slug',
         'likes',

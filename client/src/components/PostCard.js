@@ -194,8 +194,11 @@ const PostCard = ({ user, post, page = false }) => {
                                             close()
                                         }}
                                         className="p-3 text-left hover:bg-gray-100 text-gray-800 transition duration-150 ease-in-out">
-                                        Copy link
+                                        Copy Link
                                     </button>
+                                    <a href={`${serverUrl}/user_uploads/${postContent.image}`} className="p-3 hover:bg-gray-100 text-gray-800 transition duration-150 ease-in-out">
+                                        Open Original
+                                    </a>
                                     {user.id === postContent.created_by.id && (
                                         <Popup
                                             overlayStyle={{
@@ -249,13 +252,14 @@ const PostCard = ({ user, post, page = false }) => {
                     <div className="overflow-hidden">
                         {page ? (
                             <img
-                                src={`${serverUrl}/user_uploads/${postContent.image}`}
+                                src={`${serverUrl}/user_uploads/${postContent.scrollFeedImg}`}
                             />
                         ) : (
                             <Link href={`/post/${postContent.slug}`}>
                                 <a target="_blank" title="Open in new tab">
                                     <img
-                                        src={`${serverUrl}/user_uploads/${postContent.image}`}
+                                        loading="lazy"
+                                        src={`${serverUrl}/user_uploads/${postContent.scrollFeedImg}`}
                                     />
                                 </a>
                             </Link>

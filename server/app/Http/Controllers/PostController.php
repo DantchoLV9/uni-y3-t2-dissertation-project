@@ -26,6 +26,7 @@ class PostController extends Controller
 
         // Craft a name for the image to be saved with
         $imageName = time().'_'.$user->slug.'.webp';
+        $scrollFeedName = time().'_'.$user->slug.'_scrollFeed'.'.webp';
         $thumbnailName = time().'_'.$user->slug.'_thumbnail'.'.webp';
 
         // Optimise image
@@ -35,6 +36,7 @@ class PostController extends Controller
         $post = Post::create([
             'title' => $request->title,
             'image' => $imageName,
+            'scrollFeedImg' => $scrollFeedName,
             'thumbnail' => $thumbnailName,
             'slug' => Str::of($uuid)->slug('-'),
             'created_by' => $user->id
@@ -45,6 +47,13 @@ class PostController extends Controller
 
         // Save the image in the public/user_uploads folder (Important: Done after storing the post in the database)
         $optimisedImage->save("user_uploads/" . $imageName);
+
+        // Create a scroll feed optimised image
+        $optimisedImage->resize(1024, null, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+        $optimisedImage->save("user_uploads/" . $scrollFeedName);
 
         // Create thumbnail
         $imageHeight = $optimisedImage->height();

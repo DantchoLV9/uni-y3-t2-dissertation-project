@@ -10,11 +10,15 @@ const AlertCard = ({
     type = 'primary',
     className,
     children,
+    dismissedCallback,
     ...props
 }) => {
     const [dismissed, setDismissed] = useState(false)
     const handleDismiss = () => {
         setDismissed(true)
+        if (dismissedCallback) {
+            dismissedCallback();
+        }
     }
     const colors = {
         primary: { bg: 'bg-gray-800', text: 'text-white' },

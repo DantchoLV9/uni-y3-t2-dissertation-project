@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('image')->unique();
+            $table->string('scrollFeedImg')->unique();
             $table->string('thumbnail')->unique();
             $table->string('slug')->unique();
             $table->integer('likes')->default(0);

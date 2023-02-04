@@ -18,6 +18,7 @@ export default function Home() {
     const [imagePreviews, setImagePreviews] = useState([])
     const [showSecondStage, setShowSecondStage] = useState(false)
     const [fileDropError, setFileDropError] = useState(false)
+    const [unexpectedError, setUnexpectedError] = useState(false)
     const [postTitle, setPostTitle] = useState('')
     const [errors, setErrors] = useState([])
     const [loading, setLoading] = useState(false)
@@ -28,6 +29,7 @@ export default function Home() {
         formData.append('title', postTitle)
         formData.append('image', images[0])
         setLoading(true)
+        setUnexpectedError(false)
         axios
             .post('/api/create-post', formData)
             .then(result => {
@@ -38,9 +40,11 @@ export default function Home() {
             })
             .catch(error => {
                 setLoading(false)
-                if (error.response.status !== 422) throw error
-
-                setErrors(error.response.data.errors)
+                if (error.response?.status !== 422) {
+                    setUnexpectedError(true)
+                }else {
+                    setErrors(error.response.data.errors)
+                }
             })
     }
     const handleCancelButton = () => {
@@ -78,6 +82,25 @@ export default function Home() {
                 <AppLayout pageTitle="Upload">
                     <div className="py-12">
                         <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
+                            {unexpectedError &&
+                            <AlertCard
+                                title="Oh no"
+                                type="danger"
+                                dismissible
+                                className="mb-3"
+                                dismissedCallback={() => setUnexpectedError(false)}
+                                >
+                                Something unexpected went wrong. Please try again in a few minutes! If the issue persists contact the website administrator!
+                            </AlertCard>
+                            }
+                            {showSecondStage && loading ? 
+                            <AlertCard
+                                title="Hey there!"
+                                type="info"
+                                dismissible
+                                className="mb-3">
+                                Please be patient when uploading large images! Currently processing can take up to 2 minutes depending on the size of the image.
+                            </AlertCard> : ""}
                             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div className="p-6 bg-white border-b border-gray-200">
                                     <h1 className="text-xl font-bold mb-3">
