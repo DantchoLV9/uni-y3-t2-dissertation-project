@@ -12,7 +12,7 @@ class FeedController extends Controller
 {
     public function getPosts(Request $request) {
         $user = $request->user();
-        $posts = Post::orderBy('created_at', 'desc')->get();
+        $posts = Post::orderBy('created_at', 'desc')->paginate(10);
         $postController = new PostController();
         foreach($posts as $post) {
             $post['created_by'] = $postController->getPostOwner($post);
