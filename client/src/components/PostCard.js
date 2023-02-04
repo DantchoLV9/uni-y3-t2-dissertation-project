@@ -196,7 +196,7 @@ const PostCard = ({ user, post, page = false }) => {
                                         className="p-3 text-left hover:bg-gray-100 text-gray-800 transition duration-150 ease-in-out">
                                         Copy Link
                                     </button>
-                                    <a href={`${serverUrl}/user_uploads/${postContent.image}`} className="p-3 hover:bg-gray-100 text-gray-800 transition duration-150 ease-in-out">
+                                    <a href={`${serverUrl}/user_uploads/${postContent.image}`} target="_blank" className="p-3 hover:bg-gray-100 text-gray-800 transition duration-150 ease-in-out">
                                         Open Original
                                     </a>
                                     {user.id === postContent.created_by.id && (
