@@ -142,9 +142,9 @@ const PostCard = ({ user, post, page = false }) => {
                 <div className=" bg-white border-b border-gray-200 flex flex-col">
                     <div className="p-6 flex flex-row items-center justify-between">
                         <div className="flex flex-row items-center gap-3">
-                            <div className="flex-shrink-0">
+                            <div className="flex-shrink-0 border-2 border-gray-200 rounded-full p-1.5">
                                 <svg
-                                    className="h-6 w-6 fill-current text-gray-400"
+                                    className="h-6 w-6 fill-current text-gray-600"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"

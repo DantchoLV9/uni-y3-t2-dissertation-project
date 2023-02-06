@@ -92,54 +92,71 @@ const UserProfilePage = () => {
                                     )
                                 })}
                             </div>
-                            <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full sm:w-1/2 lg:w-1/3 xl:w1/4 ml-auto">
-                                <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
-                                    <div className="flex-shrink-0">
-                                        <svg
-                                            className="h-20 w-20 fill-current text-gray-400"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div className="w-full flex flex-col gap-3">
-                                        <p className="text-gray-800 font-bold text-2xl text-center">
-                                            {userProfile.name}
-                                        </p>
-                                        <div className="w-full h-1 bg-gray-200 rounded"></div>
-                                        <div className="flex flex-col xl:flex-row justify-around items-center">
-                                            <div className="flex flex-row w-full xl:w-auto xl:flex-col justify-between xl:justify-center items-center">
-                                                <p className="font-bold text-xl text-gray-500">
-                                                    Followers
-                                                </p>
-                                                <p className="text-2xl">0</p>
+                            <div className='w-full sm:w-1/2 lg:w-1/3 xl:w1/4 ml-auto'>
+                                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full ml-auto">
+                                    <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
+                                        <div className="flex-shrink-0">
+                                            <svg
+                                                className="h-20 w-20 fill-current text-gray-400"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div className="w-full flex flex-col gap-3">
+                                            <p className="text-gray-800 font-bold text-2xl text-center">
+                                                {userProfile.name}
+                                            </p>
+                                            <div className="w-full h-1 bg-gray-200 rounded"></div>
+                                            <div className="flex flex-col xl:flex-row justify-around items-center">
+                                                <div className="flex flex-row w-full xl:w-auto xl:flex-col justify-between xl:justify-center items-center">
+                                                    <p className="font-bold text-xl text-gray-500">
+                                                        Followers
+                                                    </p>
+                                                    <p className="text-2xl">0</p>
+                                                </div>
+                                                <div className="flex flex-row w-full xl:w-auto xl:flex-col justify-between xl:justify-center items-center">
+                                                    <p className="font-bold text-xl text-gray-500">
+                                                        Posts
+                                                    </p>
+                                                    <p className="text-2xl">
+                                                        {userProfile.posts_amount}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div className="flex flex-row w-full xl:w-auto xl:flex-col justify-between xl:justify-center items-center">
-                                                <p className="font-bold text-xl text-gray-500">
-                                                    Posts
-                                                </p>
-                                                <p className="text-2xl">
-                                                    {userProfile.posts_amount}
-                                                </p>
+                                            <div className="text-center">
+                                                {userProfile.id === user.id ? (
+                                                    <Button
+                                                        className="flex justify-center items-center w-full sm:w-auto"
+                                                        onClick={editProfileButton}>
+                                                        Edit Profile
+                                                    </Button>
+                                                ) : (
+                                                    <Button>Follow</Button>
+                                                )}
                                             </div>
                                         </div>
-                                        <div className="text-center">
-                                            {userProfile.id === user.id ? (
-                                                <Button
-                                                    className="flex justify-center items-center w-full sm:w-auto"
-                                                    onClick={editProfileButton}>
-                                                    Edit Profile
-                                                </Button>
-                                            ) : (
-                                                <Button>Follow</Button>
-                                            )}
+                                    </div>
+                                </div>
+                                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full ml-auto mt-5">
+                                    <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
+                                        <div className="flex-shrink-0 w-full">
+                                            <h3 className="font-bold text-xl text-gray-500 w-full">Streak Level<span className='bg-gray-200 px-1 rounded float-right'>1</span></h3>
+                                            <div className='w-full my-2'>
+                                                <div className='bg-gray-200 h-2 rounded-full overflow-hidden'>
+                                                    <div className='bg-blue-400 w-1/2 h-full'></div>
+                                                </div>
+                                            </div>
+                                            <p className='mt-2 font-bold text-gray-500'>52 points left to level 2</p>
+                                            <p className='mt-2 font-bold text-gray-500'>14 points reward for next upload</p>
+                                            <p className='mt-2 font-bold text-gray-500'>Last upload 14 hours ago</p>
                                         </div>
                                     </div>
                                 </div>
