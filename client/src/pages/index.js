@@ -27,7 +27,7 @@ export default function Home() {
             })
     }, [currentPage])
     useEffect(() => {
-        if (posts.length) {
+        if (posts.length > 5) {
             setTriggerPost(posts[posts.length - 5].id)
         }
     }, [posts])
