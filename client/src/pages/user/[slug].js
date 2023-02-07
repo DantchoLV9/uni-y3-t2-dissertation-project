@@ -59,6 +59,7 @@ const UserProfilePage = () => {
                                             <a className="relative rounded overflow-hidden group">
                                                 <div className="relative after:content-[''] after:block after:pb-100%">
                                                     <img
+                                                        loading="lazy"
                                                         className="absolute top-0 bottom-0 left-0 right-0 w-full h-full object-cover object-center"
                                                         src={`${serverUrl}/user_uploads/${post.thumbnail}`}
                                                     />
@@ -92,7 +93,7 @@ const UserProfilePage = () => {
                                     )
                                 })}
                             </div>
-                            <div className='w-full sm:w-1/2 lg:w-1/3 xl:w1/4 ml-auto'>
+                            <div className="w-full sm:w-1/2 lg:w-1/3 xl:w1/4 ml-auto">
                                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full ml-auto">
                                     <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
                                         <div className="flex-shrink-0">
@@ -120,14 +121,18 @@ const UserProfilePage = () => {
                                                     <p className="font-bold text-xl text-gray-500">
                                                         Followers
                                                     </p>
-                                                    <p className="text-2xl">0</p>
+                                                    <p className="text-2xl">
+                                                        0
+                                                    </p>
                                                 </div>
                                                 <div className="flex flex-row w-full xl:w-auto xl:flex-col justify-between xl:justify-center items-center">
                                                     <p className="font-bold text-xl text-gray-500">
                                                         Posts
                                                     </p>
                                                     <p className="text-2xl">
-                                                        {userProfile.posts_amount}
+                                                        {
+                                                            userProfile.posts_amount
+                                                        }
                                                     </p>
                                                 </div>
                                             </div>
@@ -135,7 +140,9 @@ const UserProfilePage = () => {
                                                 {userProfile.id === user.id ? (
                                                     <Button
                                                         className="flex justify-center items-center w-full sm:w-auto"
-                                                        onClick={editProfileButton}>
+                                                        onClick={
+                                                            editProfileButton
+                                                        }>
                                                         Edit Profile
                                                     </Button>
                                                 ) : (
@@ -148,15 +155,26 @@ const UserProfilePage = () => {
                                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full ml-auto mt-5">
                                     <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
                                         <div className="flex-shrink-0 w-full">
-                                            <h3 className="font-bold text-xl text-gray-500 w-full">Streak Level<span className='bg-gray-200 px-1 rounded float-right'>1</span></h3>
-                                            <div className='w-full my-2'>
-                                                <div className='bg-gray-200 h-2 rounded-full overflow-hidden'>
-                                                    <div className='bg-blue-400 w-1/2 h-full'></div>
+                                            <h3 className="font-bold text-xl text-gray-500 w-full">
+                                                Streak Level
+                                                <span className="bg-gray-200 px-1 rounded float-right">
+                                                    1
+                                                </span>
+                                            </h3>
+                                            <div className="w-full my-2">
+                                                <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
+                                                    <div className="bg-blue-400 w-1/2 h-full"></div>
                                                 </div>
                                             </div>
-                                            <p className='mt-2 font-bold text-gray-500'>52 points left to level 2</p>
-                                            <p className='mt-2 font-bold text-gray-500'>14 points reward for next upload</p>
-                                            <p className='mt-2 font-bold text-gray-500'>Last upload 14 hours ago</p>
+                                            <p className="mt-2 font-bold text-gray-500">
+                                                52 points left to level 2
+                                            </p>
+                                            <p className="mt-2 font-bold text-gray-500">
+                                                14 points reward for next upload
+                                            </p>
+                                            <p className="mt-2 font-bold text-gray-500">
+                                                Last upload 14 hours ago
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
