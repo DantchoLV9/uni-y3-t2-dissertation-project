@@ -17,6 +17,7 @@ class Post extends Model
         'slug',
         'likes',
         'comments',
+        'points_reward',
         'created_by',
     ];
 }

@@ -10,6 +10,7 @@ use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
 use Image;
 use File;
+use Config;
 
 class PostController extends Controller
 {
@@ -65,9 +66,56 @@ class PostController extends Controller
         // Save the thumbnail in the public/user_uploads folder
         $optimisedImage->save("user_uploads/" . $thumbnailName);
 
+        // Give points for upload
+        $lastUpload = $user->last_post;
+        $currentPoints = $user->points;
+        $timeSinceLastUpload = strtotime(now()) - strtotime($lastUpload);
+        $rewardPoints = Config::get('constants.reward.points');
+        $rewardPercentage = Config::get('constants.reward.percentage');
+        $levelsData = Config::get('constants.levels');
+
+        // Workout current level
+        $currentLevel = 1;
+        for ($i = count($levelsData); $i > 0; $i--) {
+            if ($currentPoints >= $levelsData[$i - 1]['points']) {
+                $currentLevel = $levelsData[$i - 1]['level'];
+                break;
+            }
+        }
+
+        // Workout added points
+        $rewardBonus = $currentLevel * ($rewardPercentage / 100);
+        $hoursBeforeLastUpload = floor($timeSinceLastUpload / 3600);
+        $addedPoints = ($rewardPoints + $rewardPoints * $rewardBonus) + ($hoursBeforeLastUpload - $hoursBeforeLastUpload * ($rewardPercentage / 100));
+
+        // Check if this is the user's first upload
+        if ($lastUpload == NULL) {
+            $user->points = $currentPoints + $rewardPoints;
+        }
+        else {
+            if ($timeSinceLastUpload > 86400) {
+                $user->points = 0;
+            }
+            else {
+                $user->points = $currentPoints + $addedPoints;
+            }
+        }
+
+        // Set last upload timestamp to now
+        $user->last_post = now();
+
         // Update user posts amount
         $user->posts_amount++;
         $user->save();
+
+        // Add the reward points amount to the post
+        if ($lastUpload == NULL) {
+            $post->points_reward = $rewardPoints;
+        }
+        else {
+            $post->points_reward = $addedPoints;
+        }
+        $post->save();
 
         return $post;
     }
@@ -82,7 +130,21 @@ class PostController extends Controller
         if ($user->id != $postOwner->id) {
             return response("Forbidden", 403);
         }
+
+        // Delete post images
+        File::delete("user_uploads/" . $targetPost->image, "user_uploads/" . $targetPost->scrollFeedImg, "user_uploads/" . $targetPost->thumbnail);
+
+        // Remove points from user
+        $currentUserPoints = $user->points;
+        $newUserPoints = $currentUserPoints - $targetPost->points_reward;
+        if ($newUserPoints < 0) {
+            $user->points = 0;
+        }
+        else {
+            $user->points = $newUserPoints;
+        }
         
+        // Delete post from database
         $targetPost->delete();
         $user->posts_amount--;
         $user->save();

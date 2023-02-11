@@ -23,6 +23,9 @@ class User extends Authenticatable
         'posts_amount',
         'email',
         'password',
+        'admin',
+        'last_post',
+        'points',
     ];
 
     /**

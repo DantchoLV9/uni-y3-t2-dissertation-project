@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->integer('likes')->default(0);
             $table->integer('comments')->default(0);
+            $table->integer('points_reward',)->default(0);
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');
             $table->timestamps();
