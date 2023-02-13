@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import axios from '@/lib/axios'
 import Button from '@/components/Button'
 import Link from 'next/link'
+import levelColors from '../../lib/levelColors'
 
 const UserProfilePage = () => {
     const serverUrl = process.env.NEXT_PUBLIC_BACKEND_URL
@@ -14,11 +15,14 @@ const UserProfilePage = () => {
     const slug = router.query.slug
     const [userProfile, setUserProfile] = useState({})
     const [userPosts, setUserPosts] = useState([])
+    const [currentLevelColor, setCurrentLevelColor] = useState('gray-200')
+    const [currentLevelPercentage, setCurrentLevelPercentage] = useState(0)
     useEffect(async () => {
         if (slug !== undefined) {
             axios
                 .get(`/api/user-profile-from-slug?slug=${slug}`)
                 .then(result => {
+                    //console.log(result.data)
                     setUserProfile(result.data)
                 })
                 .catch(error => {
@@ -32,13 +36,29 @@ const UserProfilePage = () => {
             axios
                 .get(`/api/get-posts-by-user-id?id=${userProfile.id}`)
                 .then(results => {
-                    console.log(results)
+                    //console.log(results)
                     //setUserPosts(results.data.data)
                     setUserPosts(results.data)
                 })
                 .catch(error => {
                     console.log(error)
                 })
+        }
+        if (userProfile.streak) {
+            // Set the current level color
+            setCurrentLevelColor(
+                levelColors.filter(
+                    item => parseInt(item.level) === userProfile.streak.level,
+                )[0].color,
+            )
+            // Set the current level
+            setCurrentLevelPercentage(
+                ((userProfile.streak.current_points -
+                    userProfile.streak.current_level_points) /
+                    (userProfile.streak.next_level_points -
+                        userProfile.streak.current_level_points)) *
+                    100,
+            )
         }
     }, [userProfile])
     const editProfileButton = () => {
@@ -50,48 +70,60 @@ const UserProfilePage = () => {
                 <AppLayout pageTitle={`${user.name}'s Profile`}>
                     <div className="py-12">
                         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col-reverse sm:flex-row justify-center items-start gap-3">
-                            <div className="w-full grid grid-cols-2 lg:grid-cols-3 gap-3">
-                                {userPosts.map(post => {
-                                    return (
-                                        <Link
-                                            key={`postKey-${post.id}`}
-                                            href={`/post/${post.slug}`}>
-                                            <a className="relative rounded overflow-hidden group">
-                                                <div className="relative after:content-[''] after:block after:pb-100%">
-                                                    <img
-                                                        loading="lazy"
-                                                        className="absolute top-0 bottom-0 left-0 right-0 w-full h-full object-cover object-center"
-                                                        src={`${serverUrl}/user_uploads/${post.thumbnail}`}
-                                                    />
-                                                </div>
-                                                <div className="w-full h-full absolute top-0 left-0 invisible group-hover:visible bg-black/50 flex flex-col justify-center items-center gap-5 p-5">
-                                                    <p className="text-white text-2xl font-bold text-center">
-                                                        {`${post.title
-                                                            .split(' ')
-                                                            .splice(0, 10)
-                                                            .join(' ')}${
-                                                            post.title.split(
-                                                                ' ',
-                                                            ).length > 10
-                                                                ? '...'
-                                                                : ''
-                                                        }`}
-                                                    </p>
-                                                    <div className="flex justify-center items-center">
-                                                        <div className="flex flex-col justify-center items-center">
-                                                            <p className="text-white text-xl font-bold">
-                                                                Likes
-                                                            </p>
-                                                            <p className="text-white text-xl font-bold">
-                                                                {post.likes}
-                                                            </p>
+                            <div
+                                className={`w-full ${
+                                    userPosts.length > 0 &&
+                                    'grid grid-cols-2 lg:grid-cols-3 gap-3'
+                                }`}>
+                                {userPosts.length > 0 ? (
+                                    userPosts.map(post => {
+                                        return (
+                                            <Link
+                                                key={`postKey-${post.id}`}
+                                                href={`/post/${post.slug}`}>
+                                                <a className="relative rounded overflow-hidden group">
+                                                    <div className="relative after:content-[''] after:block after:pb-100%">
+                                                        <img
+                                                            loading="lazy"
+                                                            className="absolute top-0 bottom-0 left-0 right-0 w-full h-full object-cover object-center"
+                                                            src={`${serverUrl}/user_uploads/${post.thumbnail}`}
+                                                        />
+                                                    </div>
+                                                    <div className="w-full h-full absolute top-0 left-0 invisible group-hover:visible bg-black/50 flex flex-col justify-center items-center gap-5 p-5">
+                                                        <p className="text-white text-2xl font-bold text-center">
+                                                            {`${post.title
+                                                                .split(' ')
+                                                                .splice(0, 10)
+                                                                .join(' ')}${
+                                                                post.title.split(
+                                                                    ' ',
+                                                                ).length > 10
+                                                                    ? '...'
+                                                                    : ''
+                                                            }`}
+                                                        </p>
+                                                        <div className="flex justify-center items-center">
+                                                            <div className="flex flex-col justify-center items-center">
+                                                                <p className="text-white text-xl font-bold">
+                                                                    Likes
+                                                                </p>
+                                                                <p className="text-white text-xl font-bold">
+                                                                    {post.likes}
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </a>
-                                        </Link>
-                                    )
-                                })}
+                                                </a>
+                                            </Link>
+                                        )
+                                    })
+                                ) : (
+                                    <div className="w-full">
+                                        <h2 className="font-bold text-2xl w-full text-gray-600 text-center">
+                                            No posts by {user.name} yet
+                                        </h2>
+                                    </div>
+                                )}
                             </div>
                             <div className="w-full sm:w-1/2 lg:w-1/3 xl:w1/4 ml-auto">
                                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full ml-auto">
@@ -152,32 +184,151 @@ const UserProfilePage = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full ml-auto mt-5">
-                                    <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
-                                        <div className="flex-shrink-0 w-full">
-                                            <h3 className="font-bold text-xl text-gray-500 w-full">
-                                                Streak Level
-                                                <span className="bg-gray-200 px-1 rounded float-right">
-                                                    1
-                                                </span>
-                                            </h3>
-                                            <div className="w-full my-2">
-                                                <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
-                                                    <div className="bg-blue-400 w-1/2 h-full"></div>
+                                {userProfile && (
+                                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full ml-auto mt-5">
+                                        <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
+                                            <div className="flex-shrink-0 w-full">
+                                                <h3 className="font-bold text-xl text-gray-500 w-full flex justify-between items-center">
+                                                    <span className="flex justify-center items-center">
+                                                        Level
+                                                        <Link href="/levels">
+                                                            <a
+                                                                aria-label="Learn more about levels"
+                                                                title="Learn more about levels"
+                                                                className="text-black hover:text-blue-700 ml-1 text-xs bg-blue-200 px-1 rounded-full">
+                                                                ?
+                                                            </a>
+                                                        </Link>
+                                                    </span>
+                                                    <span className="bg-gray-200 px-1 rounded float-right">
+                                                        {
+                                                            userProfile.streak
+                                                                ?.level
+                                                        }
+                                                    </span>
+                                                </h3>
+                                                <div className="w-full my-2">
+                                                    <div className="flex justify-between">
+                                                        <p className="text-sm text-gray-500">
+                                                            {
+                                                                userProfile
+                                                                    .streak
+                                                                    ?.current_points
+                                                            }
+                                                        </p>
+                                                        <p className="text-sm text-gray-500">
+                                                            {userProfile.streak
+                                                                ?.next_level_points ===
+                                                            'maxLevel'
+                                                                ? ''
+                                                                : userProfile
+                                                                      .streak
+                                                                      ?.next_level_points}
+                                                        </p>
+                                                    </div>
+                                                    <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
+                                                        <div
+                                                            className={`bg-${currentLevelColor} h-full`}
+                                                            style={{
+                                                                width: `${
+                                                                    userProfile
+                                                                        .streak
+                                                                        ?.next_level_points ===
+                                                                    'maxLevel'
+                                                                        ? 100
+                                                                        : currentLevelPercentage
+                                                                }%`,
+                                                            }}></div>
+                                                    </div>
                                                 </div>
+                                                {userProfile.id === user.id && (
+                                                    <>
+                                                        <p className="mt-2 font-bold text-gray-500">
+                                                            {userProfile.streak
+                                                                ?.next_level_points ===
+                                                            'maxLevel'
+                                                                ? 'Max level reached'
+                                                                : `${
+                                                                      userProfile
+                                                                          .streak
+                                                                          .next_level_points -
+                                                                      userProfile
+                                                                          .streak
+                                                                          .current_points
+                                                                  } points left to level ${
+                                                                      userProfile
+                                                                          .streak
+                                                                          .level +
+                                                                      1
+                                                                  }`}
+                                                        </p>
+                                                        {userProfile.streak
+                                                            .next_reward_points ||
+                                                        userProfile.streak
+                                                            .last_upload ? (
+                                                            <div className="flex flex-col xl:flex-row gap-2 mt-2">
+                                                                {userProfile
+                                                                    .streak
+                                                                    .next_reward_points !==
+                                                                    null && (
+                                                                    <div className="w-full bg-green-300 rounded flex flex-col p-2 gap-1">
+                                                                        <h4 className="text-green-700 font-bold">
+                                                                            Next
+                                                                            reward
+                                                                            points
+                                                                        </h4>
+                                                                        <p className="text-lg ml-auto mt-auto text-right">
+                                                                            {
+                                                                                userProfile
+                                                                                    .streak
+                                                                                    .next_reward_points
+                                                                            }
+                                                                        </p>
+                                                                    </div>
+                                                                )}
+                                                                {userProfile
+                                                                    .streak
+                                                                    .last_upload !==
+                                                                    null && (
+                                                                    <div className="w-full bg-blue-300 rounded flex flex-col p-2 gap-1">
+                                                                        <h4 className="text-blue-700 font-bold">
+                                                                            Last
+                                                                            update
+                                                                        </h4>
+                                                                        <p className="text-lg ml-auto mt-auto text-right">
+                                                                            {userProfile
+                                                                                .streak
+                                                                                .last_upload ===
+                                                                                0 &&
+                                                                                'Less than 1 hour ago'}
+                                                                            {userProfile
+                                                                                .streak
+                                                                                .last_upload >
+                                                                                24 &&
+                                                                                'More than 24 hrs. ago'}
+                                                                            {userProfile
+                                                                                .streak
+                                                                                .last_upload >
+                                                                                0 &&
+                                                                            userProfile
+                                                                                .streak
+                                                                                .last_upload <
+                                                                                24
+                                                                                ? `${userProfile.streak.last_upload} hrs ago`
+                                                                                : ''}
+                                                                        </p>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        ) : (
+                                                            ''
+                                                        )}
+                                                    </>
+                                                )}
                                             </div>
-                                            <p className="mt-2 font-bold text-gray-500">
-                                                52 points left to level 2
-                                            </p>
-                                            <p className="mt-2 font-bold text-gray-500">
-                                                14 points reward for next upload
-                                            </p>
-                                            <p className="mt-2 font-bold text-gray-500">
-                                                Last upload 14 hours ago
-                                            </p>
                                         </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

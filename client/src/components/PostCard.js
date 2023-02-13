@@ -11,6 +11,7 @@ import Label from './Label'
 import TextArea from './TextArea'
 import InputError from './InputError'
 import PostComment from './PostComment'
+import levelColors from '../lib/levelColors'
 
 const PostCard = ({ user, post, page = false }) => {
     const router = useRouter()
@@ -29,6 +30,8 @@ const PostCard = ({ user, post, page = false }) => {
     const [errors, setErrors] = useState([])
     const [comments, setComments] = useState([])
     const [commentPostingLoading, setCommentPostingLoading] = useState(false)
+    const [currentLevelColor, setCurrentLevelColor] = useState('gray-200')
+
     // Transform date into nice format
     useEffect(() => {
         if (user) {
@@ -64,6 +67,13 @@ const PostCard = ({ user, post, page = false }) => {
         if (!postContent.liked) {
             setLikeButtonText('Like')
             setLikeButtonApiUrl('/api/like-post?id=')
+        }
+        if (postContent) {
+            setCurrentLevelColor(
+                levelColors.filter(
+                    item => parseInt(item.level) === postContent.creator_level,
+                )[0]?.color,
+            )
         }
     }, [postContent])
     // Handle the post delete button
@@ -142,7 +152,8 @@ const PostCard = ({ user, post, page = false }) => {
                 <div className=" bg-white border-b border-gray-200 flex flex-col">
                     <div className="p-6 flex flex-row items-center justify-between">
                         <div className="flex flex-row items-center gap-3">
-                            <div className="flex-shrink-0 border-2 border-gray-200 rounded-full p-1.5">
+                            <div
+                                className={`flex-shrink-0 border-2 border-${currentLevelColor} rounded-full p-1.5`}>
                                 <svg
                                     className="h-6 w-6 fill-current text-gray-600"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -196,7 +207,10 @@ const PostCard = ({ user, post, page = false }) => {
                                         className="p-3 text-left hover:bg-gray-100 text-gray-800 transition duration-150 ease-in-out">
                                         Copy Link
                                     </button>
-                                    <a href={`${serverUrl}/user_uploads/${postContent.image}`} target="_blank" className="p-3 hover:bg-gray-100 text-gray-800 transition duration-150 ease-in-out">
+                                    <a
+                                        href={`${serverUrl}/user_uploads/${postContent.image}`}
+                                        target="_blank"
+                                        className="p-3 hover:bg-gray-100 text-gray-800 transition duration-150 ease-in-out">
                                         Open Original
                                     </a>
                                     {user.id === postContent.created_by.id && (

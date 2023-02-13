@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\PostLike;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
+use App\Http\Controllers\UserController;
 use Image;
 use File;
 use Config;
@@ -93,12 +94,7 @@ class PostController extends Controller
             $user->points = $currentPoints + $rewardPoints;
         }
         else {
-            if ($timeSinceLastUpload > 86400) {
-                $user->points = 0;
-            }
-            else {
-                $user->points = $currentPoints + $addedPoints;
-            }
+            $user->points = $currentPoints + $addedPoints;
         }
 
         // Set last upload timestamp to now
@@ -163,7 +159,16 @@ class PostController extends Controller
         $user = $request->user();
         $slug = $request["slug"];
         $targetPost = Post::firstWhere('slug', $slug);
-        $targetPost['created_by'] = $this->getPostOwner($targetPost);
+
+        // Get post owner
+        $targetUser = $this->getPostOwner($targetPost);
+
+        // Get current post owner level
+        $userController = new UserController();
+        $currentLevel = $userController->getUserLevel($targetUser);
+        
+        $targetPost['created_by'] = $targetUser;
+        $targetPost['creator_level'] = $currentLevel;
         $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
         return $targetPost;
     }
@@ -172,7 +177,16 @@ class PostController extends Controller
         $user = $request->user();
         $id = $request["id"];
         $targetPost = Post::firstWhere('id', $id);
-        $targetPost['created_by'] = $this->getPostOwner($targetPost);
+
+        // Get post owner
+        $targetUser = $this->getPostOwner($targetPost);
+
+        // Get current post owner level
+        $userController = new UserController();
+        $currentLevel = $userController->getUserLevel($targetUser);
+
+        $targetPost['created_by'] = $targetUser;
+        $targetPost['creator_level'] = $currentLevel;
         $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
         return $targetPost;
     }
@@ -181,6 +195,13 @@ class PostController extends Controller
         $user = $request->user();
         $postId = $request["id"];
         $targetPost = Post::firstWhere('id', $postId);
+
+        // Get post owner
+        $targetUser = $this->getPostOwner($targetPost);
+
+        // Get current post owner level
+        $userController = new UserController();
+        $currentLevel = $userController->getUserLevel($targetUser);
 
         // Check if post is alredy liked
         if (!PostLike::where('liked_by', $user->id)->firstWhere('liked_post', $postId)) {
@@ -191,7 +212,8 @@ class PostController extends Controller
             $targetPost->likes++;
             $targetPost->save();
         }
-        $targetPost['created_by'] = $this->getPostOwner($targetPost);
+        $targetPost['created_by'] = $targetUser;
+        $targetPost['creator_level'] = $currentLevel;
         $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
         
         return $targetPost;
@@ -203,13 +225,21 @@ class PostController extends Controller
         $targetPost = Post::firstWhere('id', $postId);
         $targetPostLike = PostLike::where('liked_by', $user->id)->firstWhere('liked_post', $postId);
 
+        // Get post owner
+        $targetUser = $this->getPostOwner($targetPost);
+
+        // Get current post owner level
+        $userController = new UserController();
+        $currentLevel = $userController->getUserLevel($targetUser);
+
         // Check if post liked
         if ($targetPostLike) {
             $targetPostLike->delete();
             $targetPost->likes--;
             $targetPost->save();
         }
-        $targetPost['created_by'] = $this->getPostOwner($targetPost);
+        $targetPost['created_by'] = $targetUser;
+        $targetPost['creator_level'] = $currentLevel;
         $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
         
         return $targetPost;

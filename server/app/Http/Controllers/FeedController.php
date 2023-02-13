@@ -7,6 +7,8 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\PostLike;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use Config;
 
 class FeedController extends Controller
 {
@@ -14,8 +16,17 @@ class FeedController extends Controller
         $user = $request->user();
         $posts = Post::orderBy('created_at', 'desc')->paginate(10);
         $postController = new PostController();
+
         foreach($posts as $post) {
-            $post['created_by'] = $postController->getPostOwner($post);
+            // Get post owner
+            $targetUser = $postController->getPostOwner($post);
+
+            // Get current post owner level
+            $userController = new UserController();
+            $currentLevel = $userController->getUserLevel($targetUser);
+
+            $post['created_by'] = $targetUser;
+            $post['creator_level'] = $currentLevel;
             $post['liked'] = $postController->isPostLiked($user, $post);
         }
         return $posts;

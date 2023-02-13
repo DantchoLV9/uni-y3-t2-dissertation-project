@@ -74,6 +74,9 @@ const Navigation = ({ user }) => {
                             <DropdownLink href={`/user/${user.slug}`}>
                                 My Profile
                             </DropdownLink>
+                            <DropdownLink href={`/levels`}>
+                                Levels Guide
+                            </DropdownLink>
                             {/* Authentication */}
                             <DropdownButton onClick={logout}>
                                 Logout
@@ -157,6 +160,9 @@ const Navigation = ({ user }) => {
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={`/user/${user.slug}`}>
                                 My Profile
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={`/levels`}>
+                                Levels Guide
                             </ResponsiveNavLink>
                             {/* Authentication */}
                             <ResponsiveNavButton onClick={logout}>
