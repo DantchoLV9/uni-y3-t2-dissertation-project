@@ -34,7 +34,7 @@ export default function Levels() {
                                             <h2 className="font-bold">
                                                 Example widget{' '}
                                                 <span className="font-normal">
-                                                    (A similar one should appear
+                                                    (A similar one will appear
                                                     in your profile page)
                                                 </span>
                                             </h2>
@@ -106,41 +106,49 @@ export default function Levels() {
                                         </h2>
                                         <ul className="list-disc list-inside">
                                             <li className="font-bold">
-                                                Level 1
+                                                Level 1 (Default)
                                             </li>
                                             <li className="ml-5">
-                                                No rewards (This is the default
-                                                level)
+                                                + 1 reaction (Like)
+                                            </li>
+                                            <li className="ml-5">
+                                                Gray profile frame
                                             </li>
                                             <li className="font-bold mt-3">
                                                 Level 2
                                             </li>
                                             <li className="ml-5">
-                                                + 1 reaction (Amazing)
+                                                + 1 reaction (Star)
+                                            </li>
+                                            <li className="ml-5">
+                                                Blue profile frame
                                             </li>
                                             <li className="font-bold mt-3">
                                                 Level 3
                                             </li>
                                             <li className="ml-5">
-                                                + 1 reaction (Love)
+                                                + 1 reaction (Heart)
                                             </li>
                                             <li className="ml-5">
-                                                Ability to add
+                                                Yellow profile frame
                                             </li>
                                             <li className="font-bold mt-3">
                                                 Level 4
                                             </li>
                                             <li className="ml-5">
-                                                +1 reaction
+                                                Ability to add details to posts
+                                            </li>
+                                            <li className="ml-5">
+                                                Green profile frame
                                             </li>
                                             <li className="font-bold mt-3">
                                                 Level 5
                                             </li>
                                             <li className="ml-5">
-                                                +1 reaction (Dislike)
+                                                + 1 reaction (Dislike)
                                             </li>
                                             <li className="ml-5">
-                                                Ability to add details to posts
+                                                Red profile frame
                                             </li>
                                         </ul>
                                         <h2 className="font-bold text-lg mt-2">
@@ -148,8 +156,9 @@ export default function Levels() {
                                         </h2>
                                         <p className="mt-2 font-bold">
                                             This system is still work in
-                                            progress, so keep in mind that it
-                                            may not be perfect.
+                                            progress, so keep in mind that some
+                                            of its features may not work as
+                                            expected.
                                         </p>
                                         <p className="mt-2">
                                             With each created post users gain
