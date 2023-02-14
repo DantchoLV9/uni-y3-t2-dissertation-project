@@ -8,6 +8,83 @@ use Config;
 
 class UserController extends Controller
 {
+    public function getUser(Request $request) {
+
+        $user = $request->user();
+
+        // Get last post timestamp
+        $lastUpload = $user->last_post;
+        $timeSinceLastUpload = strtotime(now()) - strtotime($lastUpload);
+
+        // Get streak mechanic data
+        $levelsData = Config::get('constants.levels');
+
+        // Reset user level if no upload for more than 24 hrs
+        if ($lastUpload != null) {
+            if ($timeSinceLastUpload > 86400) {
+                $daysSinceLastUpload = floor($timeSinceLastUpload / 86400);
+                
+                for ($j = 0; $j < $daysSinceLastUpload; $j++) {
+                    // Workout current level
+                    $currentPoints = $user->points;
+                    $currentLevel = 1;
+                    $currentLevelPoints = 100;
+                    for ($i = count($levelsData); $i > 0; $i--) {
+                        if ($currentPoints >= $levelsData[$i - 1]['points']) {
+                            $currentLevel = $levelsData[$i - 1]['level'];
+                            $currentLevelPoints = $levelsData[$i - 1]['points'];
+                            break;
+                        }
+                    }
+                    $newPoints = $currentPoints - ($currentPoints - ($currentLevelPoints * 0.99));
+                    if ($newPoints < 0) {
+                        $user->points = 0;
+                    }
+                    else {
+                        $user->points = $newPoints;
+                    }
+                }
+                
+                $user->last_post = now();
+                $user->save();
+            }
+        }
+        
+        // Get streak mechanic data
+        $currentPoints = $user->points;
+        $rewardPoints = Config::get('constants.reward.points');
+        $rewardPercentage = Config::get('constants.reward.percentage');
+        $currentLevelPoints = 0;
+        $nextLevelPoints = $levelsData[0]['points'];
+
+        // Workout current level
+        $currentLevel = 1;
+        for ($i = count($levelsData); $i > 0; $i--) {
+            if ($currentPoints >= $levelsData[$i - 1]['points']) {
+                $currentLevel = $levelsData[$i - 1]['level'];
+                $currentLevelPoints = $levelsData[$i - 1]['points'];
+                if ($i != count($levelsData)) {
+                    $nextLevelPoints = $levelsData[$i]['points'];
+                }
+                else {
+                    $nextLevelPoints = 'maxLevel';
+                }
+                break;
+            }
+        }
+
+        // Workout added points
+        $rewardBonus = $currentLevel * ($rewardPercentage / 100);
+        $hoursBeforeLastUpload = floor($timeSinceLastUpload / 3600);
+        $addedPoints = ($rewardPoints + $rewardPoints * $rewardBonus) + ($hoursBeforeLastUpload - $hoursBeforeLastUpload * ($rewardPercentage / 100));
+
+        $user['streak'] = [
+            'next_reward_points' => $lastUpload == null ? null : ($timeSinceLastUpload > 86400 ? 0 : floor($addedPoints)),
+            'last_upload' => ($lastUpload == null) ? null : floor($timeSinceLastUpload / 3600)
+        ];
+        return $user;
+    }
+
     public function getUserProfileFromSlug(Request $request) {
         $slug = $request["slug"];
         $targetUser = User::firstWhere('slug', $slug);

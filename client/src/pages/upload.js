@@ -76,6 +76,9 @@ export default function Home() {
             setShowSecondStage(true)
         }
     }, [images])
+    useEffect(() => {
+        console.log(user)
+    }, [user])
     return (
         <>
             {user ? (
@@ -112,11 +115,31 @@ export default function Home() {
                             )}
                             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div className="p-6 bg-white border-b border-gray-200">
-                                    <h1 className="text-xl font-bold mb-3">
-                                        {showSecondStage
-                                            ? `Post Details`
-                                            : `Upload Image`}
-                                    </h1>
+                                    <div className="flex justify-between items-center mb-3">
+                                        <h1 className="text-xl font-bold">
+                                            {showSecondStage
+                                                ? `Post Details`
+                                                : `Upload Image`}
+                                        </h1>
+                                        <p>
+                                            {user.streak.last_upload === 0 &&
+                                                'Less than 24 hrs left'}
+                                            {user.streak.last_upload === 23 &&
+                                                'Less than 1 hour left'}
+                                            {user.streak.last_upload > 0 &&
+                                            user.streak.last_upload < 23
+                                                ? `Less than ${
+                                                      24 -
+                                                      user.streak.last_upload
+                                                  } hrs left`
+                                                : ''}
+                                            <span
+                                                className="bg-gray-200 rounded p-1 font-bold ml-2"
+                                                title="your points reward">
+                                                {user.streak.next_reward_points}
+                                            </span>
+                                        </p>
+                                    </div>
                                     {showSecondStage ? (
                                         <div className="flex flex-col gap-3">
                                             <form
