@@ -24,11 +24,26 @@ export default function Levels() {
                                             exclusive features.
                                         </p>
                                         <p className="mt-2">
-                                            The points system is used to keep
-                                            track of the amount of posts a user
-                                            makes. The amount of points rewared
-                                            for each post created increases with
-                                            each gained level.
+                                            To unlock new features users must be
+                                            consistent when it comes to content
+                                            creation. With every post made a
+                                            user gains a certain amount of
+                                            points. The amount of points is
+                                            calculated using a number of
+                                            different variables.
+                                        </p>
+                                        <p className="mt-2">
+                                            However if a user stops creating
+                                            content for more than 24 hours their
+                                            level will go down by 1 for every 24
+                                            hours they've not produced content.
+                                        </p>
+                                        <p className="mt-2 font-bold">
+                                            This system is still work in
+                                            progress, so keep in mind that some
+                                            of its features may not work as
+                                            expected, or may require further
+                                            adjustments.
                                         </p>
                                         <div className="mt-2 bg-gray-100 rounded p-2">
                                             <h2 className="font-bold">
@@ -100,6 +115,26 @@ export default function Levels() {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <ul className="list-disc list-inside">
+                                                <li className="mx-2">
+                                                    Progress bar shows the
+                                                    user's current progress to
+                                                    the next level.
+                                                </li>
+                                                <li className="mx-2">
+                                                    Green box shows the amount
+                                                    of points a user will
+                                                    receive if they create a
+                                                    post at that time.
+                                                </li>
+                                                <li className="mx-2">
+                                                    Blue box shows the last
+                                                    update of the user's points.
+                                                    If there are no updates for
+                                                    more than 24 hours the user
+                                                    loses a level.
+                                                </li>
+                                            </ul>
                                         </div>
                                         <h2 className="font-bold text-lg mt-2">
                                             Levels & Rewards
@@ -151,35 +186,6 @@ export default function Levels() {
                                                 Red profile frame
                                             </li>
                                         </ul>
-                                        <h2 className="font-bold text-lg mt-2">
-                                            Details
-                                        </h2>
-                                        <p className="mt-2 font-bold">
-                                            This system is still work in
-                                            progress, so keep in mind that some
-                                            of its features may not work as
-                                            expected.
-                                        </p>
-                                        <p className="mt-2">
-                                            With each created post users gain
-                                            points. The amount of points gained
-                                            is defined by the current level of
-                                            the user and the time passed since
-                                            they last created a post.
-                                        </p>
-                                        <p className="mt-2">
-                                            When a user has gained enough points
-                                            they progress onto the next level
-                                            and unlock some new features.
-                                        </p>
-                                        <p className="mt-2">
-                                            However in order to keep their level
-                                            a user needs to be consistent and
-                                            keep on creating content. Every 24
-                                            hours in which a user has not create
-                                            at least 1 post will result in a
-                                            level decrease by 1.
-                                        </p>
                                     </div>
                                 </div>
                             </div>
