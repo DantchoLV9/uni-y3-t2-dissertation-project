@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Config;
+use App\Models\UserFollowers;
 
 class UserController extends Controller
 {
@@ -87,6 +88,7 @@ class UserController extends Controller
     }
 
     public function getUserProfileFromSlug(Request $request) {
+        $user = $request->user();
         $slug = $request["slug"];
         $targetUser = User::firstWhere('slug', $slug);
 
@@ -160,6 +162,8 @@ class UserController extends Controller
             'id' => $targetUser["id"],
             'name' => $targetUser["name"],
             'posts_amount' => $targetUser['posts_amount'],
+            'followers_amount' => $targetUser['followers_amount'],
+            'follow' => UserFollowers::where('followed_by', $user->id)->firstWhere('followed_target', $targetUser->id) ? true : false,
             'streak' => [
                 'level' => $currentLevel,
                 'current_points' => $currentPoints,
@@ -172,6 +176,7 @@ class UserController extends Controller
         return $userProfile;
     }
 
+    // Think this is not used anymore
     public function getUserProfileFromId(Request $request)
     {
         $id = $request["id"];
@@ -182,6 +187,70 @@ class UserController extends Controller
             'posts_amount' => $targetUser['posts_amount']
         ];
         return $userProfile;
+    }
+
+    public function followUser(Request $request) {
+        $user = $request->user();
+
+        try {
+            $targetUser = User::firstWhere('id', $request["id"]);
+
+            if (!UserFollowers::where('followed_by', $user->id)->firstWhere('followed_target', $targetUser->id)) {
+                UserFollowers::create([
+                    'followed_by' => $user->id,
+                    'followed_target' => $targetUser->id
+                ]);
+        
+                $targetUser->followers_amount++;
+                $targetUser->save();
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function unfollowUser(Request $request) {
+        $user = $request->user();
+
+        try {
+            $targetUser = User::firstWhere('id', $request["id"]);
+
+            $targetFollow = UserFollowers::where('followed_by', $user->id)->firstWhere('followed_target', $targetUser->id);
+    
+            if ($targetFollow) {
+                $targetFollow->delete();
+                $targetUser->followers_amount--;
+                $targetUser->save();
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    public function followsList(Request $request) {
+        $user = $request->user();
+
+        $follows = UserFollowers::where('followed_by', $user->id)->get();
+
+        $followsList = [];
+
+        foreach($follows as $follow) {
+            $followedUser = User::firstWhere('id', $follow->followed_target);
+            array_push($followsList, [
+                'user' => [
+                    'name' => $followedUser->name,
+                    'slug' => $followedUser->slug,
+                    'level' => $this->getUserLevel($followedUser),
+                ],
+                'date' => $follow->created_at
+            ]);
+        }
+
+        return $followsList;
     }
 
     // Returns the level of the passed user and checks/updates their streak status

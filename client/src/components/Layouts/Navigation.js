@@ -74,6 +74,9 @@ const Navigation = ({ user }) => {
                             <DropdownLink href={`/user/${user.slug}`}>
                                 My Profile
                             </DropdownLink>
+                            <DropdownLink href={`/followed`}>
+                                Followed Accounts
+                            </DropdownLink>
                             <DropdownLink href={`/levels`}>
                                 Levels Guide
                             </DropdownLink>
@@ -160,6 +163,9 @@ const Navigation = ({ user }) => {
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={`/user/${user.slug}`}>
                                 My Profile
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={`/followed`}>
+                                Followed Accounts
                             </ResponsiveNavLink>
                             <ResponsiveNavLink href={`/levels`}>
                                 Levels Guide

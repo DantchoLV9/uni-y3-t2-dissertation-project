@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'slug',
         'posts_amount',
+        'followers_amount',
         'email',
         'password',
         'admin',

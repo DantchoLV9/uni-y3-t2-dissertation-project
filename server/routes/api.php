@@ -67,3 +67,12 @@ Route::middleware(['auth:sanctum'])->get('/like-comment', [CommentController::cl
 
 // Unlike comment
 Route::middleware(['auth:sanctum'])->get('/unlike-comment', [CommentController::class, 'unlikeComment']);
+
+// Follow user
+Route::middleware(['auth:sanctum'])->get('/follow-user', [UserController::class, 'followUser']);
+
+// Unfollow user
+Route::middleware(['auth:sanctum'])->get('/unfollow-user', [UserController::class, 'unfollowUser']);
+
+// A list of the users the current user is following
+Route::middleware(['auth:sanctum'])->get('/follows-list', [UserController::class, 'followsList']);

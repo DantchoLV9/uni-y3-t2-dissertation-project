@@ -11,7 +11,6 @@ import CrossIcon from '@/images/crossIcon'
 const ReactionsList = ({ post, close }) => {
     const [reactionsList, setReactionsList] = useState(null)
     useEffect(() => {
-        console.log()
         axios
             .get(`/api/reactions-list?id=${post.id}`)
             .then(results => {

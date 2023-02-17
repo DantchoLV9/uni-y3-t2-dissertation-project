@@ -17,6 +17,11 @@ const UserProfilePage = () => {
     const [userPosts, setUserPosts] = useState(null)
     const [currentLevelColor, setCurrentLevelColor] = useState('gray-200')
     const [currentLevelPercentage, setCurrentLevelPercentage] = useState(0)
+    const [followLoading, setFollowLoading] = useState(false)
+    const [followButtonApiUrl, setFollowButtonApiUrl] = useState(
+        '/api/follow-user?id=',
+    )
+    const [followButtonText, setFollowButtonText] = useState('Follow')
     useEffect(async () => {
         if (slug !== undefined) {
             axios
@@ -60,9 +65,42 @@ const UserProfilePage = () => {
                     100,
             )
         }
+        if (userProfile.follow) {
+            setFollowButtonApiUrl('/api/unfollow-user?id=')
+            setFollowButtonText('Unfollow')
+        } else {
+            setFollowButtonApiUrl('/api/follow-user?id=')
+            setFollowButtonText('Follow')
+        }
     }, [userProfile])
     const editProfileButton = () => {
         router.push('/edit-profile')
+    }
+    const handleFollow = () => {
+        if (userProfile.id) {
+            setFollowLoading(true)
+            axios
+                .get(`${followButtonApiUrl}${userProfile.id}`)
+                .then(results => {
+                    if (results.data) {
+                        axios
+                            .get(`/api/user-profile-from-slug?slug=${slug}`)
+                            .then(result => {
+                                //console.log(result.data)
+                                setUserProfile(result.data)
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                router.push('/404')
+                            })
+                    }
+                    setFollowLoading(false)
+                })
+                .catch(error => {
+                    console.log(error)
+                    setFollowLoading(false)
+                })
+        }
     }
     return (
         <>
@@ -156,7 +194,9 @@ const UserProfilePage = () => {
                                                         Followers
                                                     </p>
                                                     <p className="text-2xl">
-                                                        0
+                                                        {
+                                                            userProfile.followers_amount
+                                                        }
                                                     </p>
                                                 </div>
                                                 <div className="flex flex-row w-full xl:w-auto xl:flex-col justify-between xl:justify-center items-center">
@@ -180,7 +220,11 @@ const UserProfilePage = () => {
                                                         Edit Profile
                                                     </Button>
                                                 ) : (
-                                                    <Button>Follow</Button>
+                                                    <Button
+                                                        disabled={followLoading}
+                                                        onClick={handleFollow}>
+                                                        {followButtonText}
+                                                    </Button>
                                                 )}
                                             </div>
                                         </div>
