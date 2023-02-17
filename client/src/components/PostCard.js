@@ -17,7 +17,6 @@ import PostComment from './PostComment'
 import levelColors from '../lib/levelColors'
 import PlusIcon from '@/images/plusIcon'
 import ReactionsList from './ReactionsList'
-import CrossIcon from '@/images/crossIcon'
 
 const PostCard = ({ user, post, page = false }) => {
     const router = useRouter()
@@ -363,63 +362,80 @@ const PostCard = ({ user, post, page = false }) => {
                                 }`}>
                                 {likeButtonIcon} {likeButtonText}
                             </button>
-                            <Popup
-                                trigger={
-                                    <button
-                                        disabled={
-                                            likeLoading || postContent.reacted
-                                        }
-                                        aria-label="reactions menu"
-                                        title={
-                                            postContent.reacted
-                                                ? 'already reacted'
-                                                : 'reactions menu'
-                                        }
-                                        className={`flex flex-row w-full flex-1 gap-2 justify-center items-center  text-gray-800  p-2 rounded font-bold transition duration-150 ease-in-out ${
-                                            likeLoading || postContent.reacted
-                                                ? 'opacity-50'
-                                                : 'hover:bg-gray-100 hover:text-green-600'
-                                        }`}>
-                                        <PlusIcon />
-                                    </button>
-                                }
-                                ref={reactionsMenu}
-                                position="top center"
-                                closeOnDocumentClick
-                                keepTooltipInside=".tooltipBoundary">
-                                <div className="flex flex-row justify-center w-48 bg-white overflow-hidden shadow rounded-lg gap-1">
-                                    <button
-                                        aria-label="star"
-                                        title="star"
-                                        disabled={likeLoading}
-                                        onClick={() => handleReactionButton(1)}
-                                        className={`outline-none flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-yellow-800 hover:text-yellow-600 p-2 rounded font-bold transition duration-150 ease-in-out ${
-                                            likeLoading && 'opacity-50'
-                                        }`}>
-                                        <StarIcon />
-                                    </button>
-                                    <button
-                                        aria-label="heart"
-                                        title="heart"
-                                        disabled={likeLoading}
-                                        onClick={() => handleReactionButton(2)}
-                                        className={`outline-none flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-pink-800 hover:text-pink-600 p-2 rounded font-bold transition duration-150 ease-in-out ${
-                                            likeLoading && 'opacity-50'
-                                        }`}>
-                                        <HeartIcon />
-                                    </button>
-                                    <button
-                                        aria-label="dislike"
-                                        title="dislike"
-                                        disabled={likeLoading}
-                                        onClick={() => handleReactionButton(3)}
-                                        className={`outline-none flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-red-800 hover:text-red-600 p-2 rounded font-bold transition duration-150 ease-in-out ${
-                                            likeLoading && 'opacity-50'
-                                        }`}>
-                                        <UnlikeIcon />
-                                    </button>
-                                </div>
-                            </Popup>
+                            {user.streak.level > 1 && (
+                                <Popup
+                                    trigger={
+                                        <button
+                                            disabled={
+                                                likeLoading ||
+                                                postContent.reacted
+                                            }
+                                            aria-label="reactions menu"
+                                            title={
+                                                postContent.reacted
+                                                    ? 'already reacted'
+                                                    : 'reactions menu'
+                                            }
+                                            className={`flex flex-row w-full flex-1 gap-2 justify-center items-center  text-gray-800  p-2 rounded font-bold transition duration-150 ease-in-out ${
+                                                likeLoading ||
+                                                postContent.reacted
+                                                    ? 'opacity-50'
+                                                    : 'hover:bg-gray-100 hover:text-green-600'
+                                            }`}>
+                                            <PlusIcon />
+                                        </button>
+                                    }
+                                    ref={reactionsMenu}
+                                    position="top center"
+                                    closeOnDocumentClick
+                                    keepTooltipInside=".tooltipBoundary">
+                                    <div className="flex flex-row justify-center w-48 bg-white overflow-hidden shadow rounded-lg gap-1">
+                                        {user.streak.level > 1 && (
+                                            <button
+                                                aria-label="star"
+                                                title="star"
+                                                disabled={likeLoading}
+                                                onClick={() =>
+                                                    handleReactionButton(1)
+                                                }
+                                                className={`outline-none flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-yellow-800 hover:text-yellow-600 p-2 rounded font-bold transition duration-150 ease-in-out ${
+                                                    likeLoading && 'opacity-50'
+                                                }`}>
+                                                <StarIcon />
+                                            </button>
+                                        )}
+                                        {user.streak.level > 2 && (
+                                            <button
+                                                aria-label="heart"
+                                                title="heart"
+                                                disabled={likeLoading}
+                                                onClick={() =>
+                                                    handleReactionButton(2)
+                                                }
+                                                className={`outline-none flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-pink-800 hover:text-pink-600 p-2 rounded font-bold transition duration-150 ease-in-out ${
+                                                    likeLoading && 'opacity-50'
+                                                }`}>
+                                                <HeartIcon />
+                                            </button>
+                                        )}
+                                        {user.streak.level > 4 && (
+                                            <button
+                                                aria-label="dislike"
+                                                title="dislike"
+                                                disabled={likeLoading}
+                                                onClick={() =>
+                                                    handleReactionButton(3)
+                                                }
+                                                className={`outline-none flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-red-800 hover:text-red-600 p-2 rounded font-bold transition duration-150 ease-in-out ${
+                                                    likeLoading && 'opacity-50'
+                                                }`}>
+                                                <UnlikeIcon />
+                                            </button>
+                                        )}
+                                    </div>
+                                </Popup>
+                            )}
+
                             <button
                                 onClick={() =>
                                     setCommentsSectionOpen(!commentsSectionOpen)

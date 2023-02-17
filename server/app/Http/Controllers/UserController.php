@@ -80,7 +80,8 @@ class UserController extends Controller
 
         $user['streak'] = [
             'next_reward_points' => $lastUpload == null ? null : ($timeSinceLastUpload > 86400 ? 0 : floor($addedPoints)),
-            'last_upload' => ($lastUpload == null) ? null : floor($timeSinceLastUpload / 3600)
+            'last_upload' => ($lastUpload == null) ? null : floor($timeSinceLastUpload / 3600),
+            'level' => $this->getUserLevel($user)
         ];
         return $user;
     }
