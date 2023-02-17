@@ -8,7 +8,7 @@ import HeartIcon from '@/images/heartIcon'
 import StarIcon from '@/images/starIcon'
 import CrossIcon from '@/images/crossIcon'
 
-const ReactionsList = ({ post, close }) => {
+const ReactionsList = ({ user, post, close }) => {
     const [reactionsList, setReactionsList] = useState(null)
     useEffect(() => {
         axios
@@ -34,6 +34,7 @@ const ReactionsList = ({ post, close }) => {
                             reactionColor = 'text-red-600'
                             break
                     }
+                    if (!user.gamification) reactionColor = 'text-violet-600'
                     reaction.reactionColor = reactionColor
                 })
                 setReactionsList(results.data)
@@ -66,7 +67,11 @@ const ReactionsList = ({ post, close }) => {
                               key={`reactions-list-${post.id}-${i}`}>
                               <div className="flex justify-between items-center gap-2">
                                   <div
-                                      className={`flex-shrink-0 border-2 border-${reaction.user.color} rounded-full p-1.5`}>
+                                      className={`flex-shrink-0 ${
+                                          user.gamification && 'border-2'
+                                      } border-${
+                                          reaction.user.color
+                                      } rounded-full p-1.5`}>
                                       <svg
                                           className="h-6 w-6 fill-current text-gray-600"
                                           xmlns="http://www.w3.org/2000/svg"
@@ -91,13 +96,29 @@ const ReactionsList = ({ post, close }) => {
                                   </p>
                               </div>
                               <p className={`${reaction.reactionColor}`}>
-                                  {reaction.reaction_type === 0 && <LikeIcon />}
-                                  {reaction.reaction_type === 1 && <StarIcon />}
-                                  {reaction.reaction_type === 2 && (
-                                      <HeartIcon />
+                                  {reaction.reaction_type === 0 ||
+                                  !user.gamification ? (
+                                      <LikeIcon />
+                                  ) : (
+                                      ''
                                   )}
-                                  {reaction.reaction_type === 3 && (
+                                  {reaction.reaction_type === 1 &&
+                                  user.gamification ? (
+                                      <StarIcon />
+                                  ) : (
+                                      ''
+                                  )}
+                                  {reaction.reaction_type === 2 &&
+                                  user.gamification ? (
+                                      <HeartIcon />
+                                  ) : (
+                                      ''
+                                  )}
+                                  {reaction.reaction_type === 3 &&
+                                  user.gamification ? (
                                       <UnlikeIcon />
+                                  ) : (
+                                      ''
                                   )}
                               </p>
                           </div>

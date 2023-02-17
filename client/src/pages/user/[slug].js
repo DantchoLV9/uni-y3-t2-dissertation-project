@@ -230,151 +230,156 @@ const UserProfilePage = () => {
                                         </div>
                                     </div>
                                 </div>
-                                {userProfile && (
-                                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full ml-auto mt-5">
-                                        <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
-                                            <div className="flex-shrink-0 w-full">
-                                                <h3 className="font-bold text-xl text-gray-500 w-full flex justify-between items-center">
-                                                    <span className="flex justify-center items-center">
-                                                        Level
-                                                        <Link href="/levels">
-                                                            <a
-                                                                aria-label="Learn more about levels"
-                                                                title="Learn more about levels"
-                                                                className="text-black hover:text-blue-700 ml-1 text-xs bg-blue-200 px-1 rounded-full">
-                                                                ?
-                                                            </a>
-                                                        </Link>
-                                                    </span>
-                                                    <span className="bg-gray-200 px-1 rounded float-right">
-                                                        {
-                                                            userProfile.streak
-                                                                ?.level
-                                                        }
-                                                    </span>
-                                                </h3>
-                                                <div className="w-full my-2">
-                                                    <div className="flex justify-between">
-                                                        <p className="text-sm text-gray-500">
+                                {userProfile &&
+                                    user.gamification ? (
+                                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-full ml-auto mt-5">
+                                            <div className="p-6 bg-white border-b border-gray-200 flex flex-col gap-3 justify-center items-center">
+                                                <div className="flex-shrink-0 w-full">
+                                                    <h3 className="font-bold text-xl text-gray-500 w-full flex justify-between items-center">
+                                                        <span className="flex justify-center items-center">
+                                                            Level
+                                                            <Link href="/levels">
+                                                                <a
+                                                                    aria-label="Learn more about levels"
+                                                                    title="Learn more about levels"
+                                                                    className="text-black hover:text-blue-700 ml-1 text-xs bg-blue-200 px-1 rounded-full">
+                                                                    ?
+                                                                </a>
+                                                            </Link>
+                                                        </span>
+                                                        <span className="bg-gray-200 px-1 rounded float-right">
                                                             {
                                                                 userProfile
                                                                     .streak
-                                                                    ?.current_points
+                                                                    ?.level
                                                             }
-                                                        </p>
-                                                        <p className="text-sm text-gray-500">
-                                                            {userProfile.streak
-                                                                ?.next_level_points ===
-                                                            'maxLevel'
-                                                                ? ''
-                                                                : userProfile
-                                                                      .streak
-                                                                      ?.next_level_points}
-                                                        </p>
-                                                    </div>
-                                                    <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
-                                                        <div
-                                                            className={`bg-${currentLevelColor} h-full`}
-                                                            style={{
-                                                                width: `${
+                                                        </span>
+                                                    </h3>
+                                                    <div className="w-full my-2">
+                                                        <div className="flex justify-between">
+                                                            <p className="text-sm text-gray-500">
+                                                                {
                                                                     userProfile
                                                                         .streak
-                                                                        ?.next_level_points ===
-                                                                    'maxLevel'
-                                                                        ? 100
-                                                                        : currentLevelPercentage
-                                                                }%`,
-                                                            }}></div>
-                                                    </div>
-                                                </div>
-                                                {userProfile.id === user.id && (
-                                                    <>
-                                                        <p className="mt-2 font-bold text-gray-500">
-                                                            {userProfile.streak
-                                                                ?.next_level_points ===
-                                                            'maxLevel'
-                                                                ? 'Max level reached'
-                                                                : `${
-                                                                      userProfile
-                                                                          .streak
-                                                                          .next_level_points -
-                                                                      userProfile
-                                                                          .streak
-                                                                          .current_points
-                                                                  } points left to level ${
-                                                                      userProfile
-                                                                          .streak
-                                                                          .level +
-                                                                      1
-                                                                  }`}
-                                                        </p>
-                                                        {userProfile.streak
-                                                            .next_reward_points ||
-                                                        userProfile.streak
-                                                            .last_upload ? (
-                                                            <div className="flex flex-col xl:flex-row gap-2 mt-2">
+                                                                        ?.current_points
+                                                                }
+                                                            </p>
+                                                            <p className="text-sm text-gray-500">
                                                                 {userProfile
                                                                     .streak
-                                                                    .next_reward_points !==
-                                                                    null && (
-                                                                    <div className="w-full bg-green-300 rounded flex flex-col p-2 gap-1">
-                                                                        <h4 className="text-green-700 font-bold">
-                                                                            Next
-                                                                            reward
-                                                                            points
-                                                                        </h4>
-                                                                        <p className="text-lg ml-auto mt-auto text-right">
-                                                                            {
+                                                                    ?.next_level_points ===
+                                                                'maxLevel'
+                                                                    ? ''
+                                                                    : userProfile
+                                                                          .streak
+                                                                          ?.next_level_points}
+                                                            </p>
+                                                        </div>
+                                                        <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
+                                                            <div
+                                                                className={`bg-${currentLevelColor} h-full`}
+                                                                style={{
+                                                                    width: `${
+                                                                        userProfile
+                                                                            .streak
+                                                                            ?.next_level_points ===
+                                                                        'maxLevel'
+                                                                            ? 100
+                                                                            : currentLevelPercentage
+                                                                    }%`,
+                                                                }}></div>
+                                                        </div>
+                                                    </div>
+                                                    {userProfile.id ===
+                                                        user.id && (
+                                                        <>
+                                                            <p className="mt-2 font-bold text-gray-500">
+                                                                {userProfile
+                                                                    .streak
+                                                                    ?.next_level_points ===
+                                                                'maxLevel'
+                                                                    ? 'Max level reached'
+                                                                    : `${
+                                                                          userProfile
+                                                                              .streak
+                                                                              .next_level_points -
+                                                                          userProfile
+                                                                              .streak
+                                                                              .current_points
+                                                                      } points left to level ${
+                                                                          userProfile
+                                                                              .streak
+                                                                              .level +
+                                                                          1
+                                                                      }`}
+                                                            </p>
+                                                            {userProfile.streak
+                                                                .next_reward_points ||
+                                                            userProfile.streak
+                                                                .last_upload ? (
+                                                                <div className="flex flex-col xl:flex-row gap-2 mt-2">
+                                                                    {userProfile
+                                                                        .streak
+                                                                        .next_reward_points !==
+                                                                        null && (
+                                                                        <div className="w-full bg-green-300 rounded flex flex-col p-2 gap-1">
+                                                                            <h4 className="text-green-700 font-bold">
+                                                                                Next
+                                                                                reward
+                                                                                points
+                                                                            </h4>
+                                                                            <p className="text-lg ml-auto mt-auto text-right">
+                                                                                {
+                                                                                    userProfile
+                                                                                        .streak
+                                                                                        .next_reward_points
+                                                                                }
+                                                                            </p>
+                                                                        </div>
+                                                                    )}
+                                                                    {userProfile
+                                                                        .streak
+                                                                        .last_upload !==
+                                                                        null && (
+                                                                        <div className="w-full bg-blue-300 rounded flex flex-col p-2 gap-1">
+                                                                            <h4 className="text-blue-700 font-bold">
+                                                                                Last
+                                                                                update
+                                                                            </h4>
+                                                                            <p className="text-lg ml-auto mt-auto text-right">
+                                                                                {userProfile
+                                                                                    .streak
+                                                                                    .last_upload ===
+                                                                                    0 &&
+                                                                                    'Less than 1 hour ago'}
+                                                                                {userProfile
+                                                                                    .streak
+                                                                                    .last_upload >
+                                                                                    24 &&
+                                                                                    'More than 24 hrs. ago'}
+                                                                                {userProfile
+                                                                                    .streak
+                                                                                    .last_upload >
+                                                                                    0 &&
                                                                                 userProfile
                                                                                     .streak
-                                                                                    .next_reward_points
-                                                                            }
-                                                                        </p>
-                                                                    </div>
-                                                                )}
-                                                                {userProfile
-                                                                    .streak
-                                                                    .last_upload !==
-                                                                    null && (
-                                                                    <div className="w-full bg-blue-300 rounded flex flex-col p-2 gap-1">
-                                                                        <h4 className="text-blue-700 font-bold">
-                                                                            Last
-                                                                            update
-                                                                        </h4>
-                                                                        <p className="text-lg ml-auto mt-auto text-right">
-                                                                            {userProfile
-                                                                                .streak
-                                                                                .last_upload ===
-                                                                                0 &&
-                                                                                'Less than 1 hour ago'}
-                                                                            {userProfile
-                                                                                .streak
-                                                                                .last_upload >
-                                                                                24 &&
-                                                                                'More than 24 hrs. ago'}
-                                                                            {userProfile
-                                                                                .streak
-                                                                                .last_upload >
-                                                                                0 &&
-                                                                            userProfile
-                                                                                .streak
-                                                                                .last_upload <
-                                                                                24
-                                                                                ? `${userProfile.streak.last_upload} hrs ago`
-                                                                                : ''}
-                                                                        </p>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        ) : (
-                                                            ''
-                                                        )}
-                                                    </>
-                                                )}
+                                                                                    .last_upload <
+                                                                                    24
+                                                                                    ? `${userProfile.streak.last_upload} hrs ago`
+                                                                                    : ''}
+                                                                            </p>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            ) : (
+                                                                ''
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                )}
+                                        </div>,
+                                    ) : ""}
                             </div>
                         </div>
                     </div>

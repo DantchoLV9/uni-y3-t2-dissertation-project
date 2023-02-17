@@ -57,7 +57,7 @@ const PostCard = ({ user, post, page = false }) => {
     }, [user])
     // Handle the like/unlike button functionality
     const handleReactionButton = reactionType => {
-        reactionsMenu.current.close()
+        reactionsMenu.current?.close()
         setLikeLoading(true)
         axios
             .get(`${likeButtonApiUrl}${post.id}&reaction=${reactionType}`)
@@ -187,7 +187,7 @@ const PostCard = ({ user, post, page = false }) => {
                     <div className="p-6 flex flex-row items-center justify-between">
                         <div className="flex flex-row items-center gap-3">
                             <div
-                                className={`flex-shrink-0 border-2 border-${currentLevelColor} rounded-full p-1.5`}>
+                                className={`flex-shrink-0 ${user.gamification && "border-2"} border-${currentLevelColor} rounded-full p-1.5`}>
                                 <svg
                                     className="h-6 w-6 fill-current text-gray-600"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -389,6 +389,7 @@ const PostCard = ({ user, post, page = false }) => {
                                     {close => (
                                         <div className="flex flex-col justify-center p-5 bg-white overflow-hidden shadow-xl rounded-lg">
                                             <ReactionsList
+                                                user={user}
                                                 post={postContent}
                                                 close={close}
                                             />
@@ -415,7 +416,7 @@ const PostCard = ({ user, post, page = false }) => {
                                 }`}>
                                 {likeButtonIcon} {likeButtonText}
                             </button>
-                            {user.streak.level > 1 && (
+                            {user.streak.level > 1 && user.gamification ? (
                                 <Popup
                                     trigger={
                                         <button
@@ -487,7 +488,7 @@ const PostCard = ({ user, post, page = false }) => {
                                         )}
                                     </div>
                                 </Popup>
-                            )}
+                            ) : ""}
                             <button
                                 onClick={() =>
                                     setCommentsSectionOpen(!commentsSectionOpen)
@@ -501,7 +502,7 @@ const PostCard = ({ user, post, page = false }) => {
                                 postContent.aperture ||
                                 postContent.shutter_speed ||
                                 postContent.iso
-                            ) && (
+                            ) && user.gamification ? (
                                 <button
                                     onClick={() =>
                                         setPostDetailsToggled(
@@ -511,7 +512,7 @@ const PostCard = ({ user, post, page = false }) => {
                                     className="flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-gray-800 hover:text-yellow-500 py-2 rounded font-bold transition duration-150 ease-in-out">
                                     <DetailsIcon /> Post Details
                                 </button>
-                            )}
+                            ) : ""}
                         </div>
                     </div>
                     {commentsSectionOpen && (
@@ -572,6 +573,7 @@ const PostCard = ({ user, post, page = false }) => {
                                             getPostComments={getPostComments}
                                             user={user}
                                             comment={comment}
+                                            currentLevelColor={currentLevelColor}
                                         />
                                     )
                                 })}

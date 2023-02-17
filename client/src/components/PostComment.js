@@ -11,6 +11,7 @@ const PostComment = ({
     getPostComments,
     user,
     comment,
+    currentLevelColor,
 }) => {
     const [commentData, setCommentData] = useState(comment)
     const [commentDeleted, setCommentDeleted] = useState(false)
@@ -63,7 +64,10 @@ const PostComment = ({
                     commentDeleted && 'hidden'
                 }`}>
                 <div className="flex gap-1 items-center">
-                    <div className="flex-shrink-0">
+                    <div
+                        className={`flex-shrink-0 ${
+                            user.gamification && 'border-2'
+                        } border-${currentLevelColor} rounded-full p-1.5`}>
                         <svg
                             className="h-8 w-8 fill-current text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"

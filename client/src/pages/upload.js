@@ -198,7 +198,8 @@ export default function Home() {
                                                             className="mt-2"
                                                         />
                                                     </div>
-                                                    {user.streak.level > 4 && (
+                                                    {user.streak.level > 4 &&
+                                                    user.gamification ? (
                                                         <>
                                                             <p className="text-sm font-bold">
                                                                 Post Details
@@ -366,6 +367,8 @@ export default function Home() {
                                                                 />
                                                             </div>
                                                         </>
+                                                    ) : (
+                                                        ''
                                                     )}
                                                     <div className="w-full flex justify-between items-center">
                                                         <Button
