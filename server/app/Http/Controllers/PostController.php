@@ -23,6 +23,11 @@ class PostController extends Controller
         // Validate user input
         $request->validate([
             'title' => 'required|string|max:255',
+            'camera' => 'max:255',
+            'lens' => 'max:255',
+            'aperture' => 'max:255',
+            'shutterSpeed' => 'max:255',
+            'iso' => 'max:255',
             'image' => 'required|image|mimes:jpeg,jpg,png|max:10240'
         ]);
 
@@ -38,11 +43,27 @@ class PostController extends Controller
         $post = Post::create([
             'title' => $request->title,
             'image' => $imageName,
-            'scrollFeedImg' => $scrollFeedName,
+            'scroll_feed_img' => $scrollFeedName,
             'thumbnail' => $thumbnailName,
             'slug' => Str::of($uuid)->slug('-'),
             'created_by' => $user->id
         ]);
+
+        if ($request->camera) {
+            $post->camera = $request->camera;
+        }
+        if ($request->lens) {
+            $post->lens = $request->lens;
+        }
+        if ($request->aperture) {
+            $post->aperture = $request->aperture;
+        }
+        if ($request->shutterSpeed) {
+            $post->shutter_speed = $request->shutterSpeed;
+        }
+        if ($request->iso) {
+            $post->iso = $request->iso;
+        }
 
         // Make sure that user_uploads folder exists
         File::ensureDirectoryExists('user_uploads/');
@@ -128,7 +149,7 @@ class PostController extends Controller
         }
 
         // Delete post images
-        File::delete("user_uploads/" . $targetPost->image, "user_uploads/" . $targetPost->scrollFeedImg, "user_uploads/" . $targetPost->thumbnail);
+        File::delete("user_uploads/" . $targetPost->image, "user_uploads/" . $targetPost->scroll_feed_img, "user_uploads/" . $targetPost->thumbnail);
 
         // Remove points from user
         $currentUserPoints = $user->points;

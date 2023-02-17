@@ -20,6 +20,11 @@ export default function Home() {
     const [fileDropError, setFileDropError] = useState(false)
     const [unexpectedError, setUnexpectedError] = useState(false)
     const [postTitle, setPostTitle] = useState('')
+    const [postCamera, setPostCamera] = useState('')
+    const [postLens, setPostLens] = useState('')
+    const [postAperture, setPostAperture] = useState('')
+    const [postShutterSpeed, setPostShutterSpeed] = useState('')
+    const [postISO, setPostISO] = useState('')
     const [errors, setErrors] = useState([])
     const [loading, setLoading] = useState(false)
     const submitForm = async e => {
@@ -27,6 +32,11 @@ export default function Home() {
         setErrors([])
         const formData = new FormData()
         formData.append('title', postTitle)
+        formData.append('camera', postCamera)
+        formData.append('lens', postLens)
+        formData.append('aperture', postAperture)
+        formData.append('shutterSpeed', postShutterSpeed)
+        formData.append('iso', postISO)
         formData.append('image', images[0])
         setLoading(true)
         setUnexpectedError(false)
@@ -53,6 +63,11 @@ export default function Home() {
         setShowSecondStage(false)
         setFileDropError(false)
         setPostTitle('')
+        setPostCamera('')
+        setPostLens('')
+        setPostAperture('')
+        setPostShutterSpeed('')
+        setPostISO('')
     }
     const handleFileUpload = files => {
         setImages(files)
@@ -183,6 +198,175 @@ export default function Home() {
                                                             className="mt-2"
                                                         />
                                                     </div>
+                                                    {user.streak.level > 4 && (
+                                                        <>
+                                                            <p className="text-sm font-bold">
+                                                                Post Details
+                                                                (Optional)
+                                                            </p>
+                                                            <div>
+                                                                <Label
+                                                                    className=""
+                                                                    htmlFor="postCamera">
+                                                                    Camera
+                                                                </Label>
+                                                                <Input
+                                                                    id="postCamera"
+                                                                    type="text"
+                                                                    className="block mt-1 w-full"
+                                                                    placeholder="Sony A6400"
+                                                                    disabled={
+                                                                        loading
+                                                                    }
+                                                                    value={
+                                                                        postCamera
+                                                                    }
+                                                                    onChange={e => {
+                                                                        setPostCamera(
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                        )
+                                                                    }}
+                                                                />
+                                                                <InputError
+                                                                    messages={
+                                                                        errors.camera
+                                                                    }
+                                                                    className="mt-2"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <Label
+                                                                    className=""
+                                                                    htmlFor="postLens">
+                                                                    Lens
+                                                                </Label>
+                                                                <Input
+                                                                    id="postLens"
+                                                                    type="text"
+                                                                    className="block mt-1 w-full"
+                                                                    placeholder="SEL70350G"
+                                                                    disabled={
+                                                                        loading
+                                                                    }
+                                                                    value={
+                                                                        postLens
+                                                                    }
+                                                                    onChange={e => {
+                                                                        setPostLens(
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                        )
+                                                                    }}
+                                                                />
+                                                                <InputError
+                                                                    messages={
+                                                                        errors.lens
+                                                                    }
+                                                                    className="mt-2"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <Label
+                                                                    className=""
+                                                                    htmlFor="postAperture">
+                                                                    Aperture
+                                                                </Label>
+                                                                <Input
+                                                                    id="postAperture"
+                                                                    type="text"
+                                                                    className="block mt-1 w-full"
+                                                                    placeholder="f/1.8"
+                                                                    disabled={
+                                                                        loading
+                                                                    }
+                                                                    value={
+                                                                        postAperture
+                                                                    }
+                                                                    onChange={e => {
+                                                                        setPostAperture(
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                        )
+                                                                    }}
+                                                                />
+                                                                <InputError
+                                                                    messages={
+                                                                        errors.aperture
+                                                                    }
+                                                                    className="mt-2"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <Label
+                                                                    className=""
+                                                                    htmlFor="postShutterSpeed">
+                                                                    Shutter
+                                                                    Speed
+                                                                </Label>
+                                                                <Input
+                                                                    id="postShutterSpeed"
+                                                                    type="text"
+                                                                    className="block mt-1 w-full"
+                                                                    placeholder="1/4000"
+                                                                    disabled={
+                                                                        loading
+                                                                    }
+                                                                    value={
+                                                                        postShutterSpeed
+                                                                    }
+                                                                    onChange={e => {
+                                                                        setPostShutterSpeed(
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                        )
+                                                                    }}
+                                                                />
+                                                                <InputError
+                                                                    messages={
+                                                                        errors.shutterSpeed
+                                                                    }
+                                                                    className="mt-2"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <Label
+                                                                    className=""
+                                                                    htmlFor="postISO">
+                                                                    ISO
+                                                                </Label>
+                                                                <Input
+                                                                    id="postISO"
+                                                                    type="text"
+                                                                    className="block mt-1 w-full"
+                                                                    placeholder="100"
+                                                                    disabled={
+                                                                        loading
+                                                                    }
+                                                                    value={
+                                                                        postISO
+                                                                    }
+                                                                    onChange={e => {
+                                                                        setPostISO(
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                        )
+                                                                    }}
+                                                                />
+                                                                <InputError
+                                                                    messages={
+                                                                        errors.iso
+                                                                    }
+                                                                    className="mt-2"
+                                                                />
+                                                            </div>
+                                                        </>
+                                                    )}
                                                     <div className="w-full flex justify-between items-center">
                                                         <Button
                                                             type="button"

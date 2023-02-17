@@ -17,6 +17,7 @@ import PostComment from './PostComment'
 import levelColors from '../lib/levelColors'
 import PlusIcon from '@/images/plusIcon'
 import ReactionsList from './ReactionsList'
+import DetailsIcon from '@/images/detailsIcon'
 
 const PostCard = ({ user, post, page = false }) => {
     const router = useRouter()
@@ -39,6 +40,7 @@ const PostCard = ({ user, post, page = false }) => {
     const [comments, setComments] = useState([])
     const [commentPostingLoading, setCommentPostingLoading] = useState(false)
     const [currentLevelColor, setCurrentLevelColor] = useState('gray-200')
+    const [postDetailsToggled, setPostDetailsToggled] = useState(false)
 
     // Transform date into nice format
     useEffect(() => {
@@ -298,14 +300,14 @@ const PostCard = ({ user, post, page = false }) => {
                     <div className="overflow-hidden">
                         {page ? (
                             <img
-                                src={`${serverUrl}/user_uploads/${postContent.scrollFeedImg}`}
+                                src={`${serverUrl}/user_uploads/${postContent.scroll_feed_img}`}
                             />
                         ) : (
                             <Link href={`/post/${postContent.slug}`}>
                                 <a target="_blank" title="Open in new tab">
                                     <img
                                         loading="lazy"
-                                        src={`${serverUrl}/user_uploads/${postContent.scrollFeedImg}`}
+                                        src={`${serverUrl}/user_uploads/${postContent.scroll_feed_img}`}
                                     />
                                 </a>
                             </Link>
@@ -315,6 +317,57 @@ const PostCard = ({ user, post, page = false }) => {
                         <p className="font-bold text-gray-800">
                             {postContent.title}
                         </p>
+                        {postDetailsToggled &&
+                            (
+                                postContent.camera ||
+                                postContent.lens ||
+                                postContent.aperture ||
+                                postContent.shutter_speed ||
+                                postContent.iso
+                            ) && (
+                                <div className="flex justify-between items-center gap-2">
+                                    {postContent.camera && (
+                                        <p className="bg-gray-100 p-5 w-full flex flex-col justify-center items-center rounded text-sm">
+                                            Camera{' '}
+                                            <span className="font-bold text-lg">
+                                                {postContent.camera}
+                                            </span>
+                                        </p>
+                                    )}
+                                    {postContent.lens && (
+                                        <p className="bg-gray-100 p-5 w-full flex flex-col justify-center items-center rounded text-sm">
+                                            Lens{' '}
+                                            <span className="font-bold text-lg">
+                                                {postContent.lens}
+                                            </span>
+                                        </p>
+                                    )}
+                                    {postContent.aperture && (
+                                        <p className="bg-gray-100 p-5 w-full flex flex-col justify-center items-center rounded text-sm">
+                                            Aperture{' '}
+                                            <span className="font-bold text-lg">
+                                                {postContent.aperture}
+                                            </span>
+                                        </p>
+                                    )}
+                                    {postContent.shutter_speed && (
+                                        <p className="bg-gray-100 p-5 w-full flex flex-col justify-center items-center rounded text-sm">
+                                            Shutter Speed{' '}
+                                            <span className="font-bold text-lg">
+                                                {postContent.shutter_speed}
+                                            </span>
+                                        </p>
+                                    )}
+                                    {postContent.iso && (
+                                        <p className="bg-gray-100 p-5 w-full flex flex-col justify-center items-center rounded text-sm">
+                                            ISO{' '}
+                                            <span className="font-bold text-lg">
+                                                {postContent.iso}
+                                            </span>
+                                        </p>
+                                    )}
+                                </div>,
+                            )}
                         <div className="flex items-center justify-between flex-col gap-2 sm:gap-0 sm:flex-row">
                             <p className="text-sm font-bold text-gray-500 self-start sm:self-center">
                                 {createdAt}
@@ -353,7 +406,7 @@ const PostCard = ({ user, post, page = false }) => {
                                 </p>
                             </div>
                         </div>
-                        <div className="w-full flex justify-around items-center">
+                        <div className="w-full flex justify-around items-center flex-col sm:flex-row">
                             <button
                                 disabled={likeLoading}
                                 onClick={() => handleReactionButton(0)}
@@ -376,13 +429,13 @@ const PostCard = ({ user, post, page = false }) => {
                                                     ? 'already reacted'
                                                     : 'reactions menu'
                                             }
-                                            className={`flex flex-row w-full flex-1 gap-2 justify-center items-center  text-gray-800  p-2 rounded font-bold transition duration-150 ease-in-out ${
+                                            className={`flex flex-row w-full gap-2 justify-center items-center  text-gray-800  p-2 rounded font-bold transition duration-150 ease-in-out ${
                                                 likeLoading ||
                                                 postContent.reacted
                                                     ? 'opacity-50'
                                                     : 'hover:bg-gray-100 hover:text-green-600'
                                             }`}>
-                                            <PlusIcon />
+                                            <PlusIcon /> Reactions
                                         </button>
                                     }
                                     ref={reactionsMenu}
@@ -435,7 +488,6 @@ const PostCard = ({ user, post, page = false }) => {
                                     </div>
                                 </Popup>
                             )}
-
                             <button
                                 onClick={() =>
                                     setCommentsSectionOpen(!commentsSectionOpen)
@@ -443,6 +495,23 @@ const PostCard = ({ user, post, page = false }) => {
                                 className="flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-gray-800 hover:text-blue-500 py-2 rounded font-bold transition duration-150 ease-in-out">
                                 <CommentIcon /> Comment
                             </button>
+                            {(
+                                postContent.camera ||
+                                postContent.lens ||
+                                postContent.aperture ||
+                                postContent.shutter_speed ||
+                                postContent.iso
+                            ) && (
+                                <button
+                                    onClick={() =>
+                                        setPostDetailsToggled(
+                                            !postDetailsToggled,
+                                        )
+                                    }
+                                    className="flex flex-row w-full gap-2 justify-center items-center hover:bg-gray-100 text-gray-800 hover:text-yellow-500 py-2 rounded font-bold transition duration-150 ease-in-out">
+                                    <DetailsIcon /> Post Details
+                                </button>
+                            )}
                         </div>
                     </div>
                     {commentsSectionOpen && (

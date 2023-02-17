@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('admin')->default(false);
+            $table->boolean('gamification')->default(false);
             $table->timestamp('last_post')->nullable();
             $table->integer('points')->default(0);
             $table->rememberToken();

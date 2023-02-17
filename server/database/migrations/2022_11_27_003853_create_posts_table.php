@@ -16,8 +16,13 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('camera')->nullable();
+            $table->string('lens')->nullable();
+            $table->string('aperture')->nullable();
+            $table->string('shutter_speed')->nullable();
+            $table->string('iso')->nullable();
             $table->string('image')->unique();
-            $table->string('scrollFeedImg')->unique();
+            $table->string('scroll_feed_img')->unique();
             $table->string('thumbnail')->unique();
             $table->string('slug')->unique();
             $table->integer('likes')->default(0);
