@@ -45,10 +45,13 @@ Route::middleware(['auth:sanctum'])->get('/get-post', [PostController::class, 'g
 Route::middleware(['auth:sanctum'])->get('/get-post-from-id', [PostController::class, 'getPostById']);
 
 // Like post
-Route::middleware(['auth:sanctum'])->get('/like-post', [PostController::class, 'likePost']);
+Route::middleware(['auth:sanctum'])->get('/react-post', [PostController::class, 'addPostReaction']);
 
 // Unlike post
-Route::middleware(['auth:sanctum'])->get('/unlike-post', [PostController::class, 'unlikePost']);
+Route::middleware(['auth:sanctum'])->get('/unreact-post', [PostController::class, 'removePostReaction']);
+
+// Reactions list
+Route::middleware(['auth:sanctum'])->get('/reactions-list', [PostController::class, 'getReactionsList']);
 
 // Add comment
 Route::middleware(['auth:sanctum'])->post('/create-comment', [CommentController::class, 'createComment']);

@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PostLike extends Model
+class PostReaction extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'liked_by',
-        'liked_post',
+        'reacted_by',
+        'reacted_post',
+        'reaction_type',
     ];
 }

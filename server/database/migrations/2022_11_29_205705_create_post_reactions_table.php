@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('post_likes', function (Blueprint $table) {
+        Schema::create('post_reactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('liked_by');
-            $table->unsignedBigInteger('liked_post');
-            $table->foreign('liked_by')->references('id')->on('users');
-            $table->foreign('liked_post')->references('id')->on('posts')->onDelete('cascade');
+            $table->unsignedBigInteger('reacted_by');
+            $table->unsignedBigInteger('reacted_post');
+            $table->integer('reaction_type');
+            $table->foreign('reacted_by')->references('id')->on('users');
+            $table->foreign('reacted_post')->references('id')->on('posts')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_likes');
+        Schema::dropIfExists('post_reactions');
     }
 };

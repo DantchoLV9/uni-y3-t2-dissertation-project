@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Post;
-use App\Models\PostLike;
+use App\Models\PostReaction;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
 use App\Http\Controllers\UserController;
@@ -169,7 +169,7 @@ class PostController extends Controller
         
         $targetPost['created_by'] = $targetUser;
         $targetPost['creator_level'] = $currentLevel;
-        $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
+        $targetPost['reacted'] = $this->isPostLiked($user, $targetPost);
         return $targetPost;
     }
 
@@ -187,14 +187,17 @@ class PostController extends Controller
 
         $targetPost['created_by'] = $targetUser;
         $targetPost['creator_level'] = $currentLevel;
-        $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
+        $targetPost['reacted'] = $this->isPostLiked($user, $targetPost);
         return $targetPost;
     }
 
-    public function likePost(Request $request) {
+    public function addPostReaction(Request $request) {
         $user = $request->user();
         $postId = $request["id"];
+        $reactionType = $request["reaction"];
         $targetPost = Post::firstWhere('id', $postId);
+
+        // TODO: Currently there is no check to make sure that user can create the type of reaction they requested
 
         // Get post owner
         $targetUser = $this->getPostOwner($targetPost);
@@ -204,26 +207,27 @@ class PostController extends Controller
         $currentLevel = $userController->getUserLevel($targetUser);
 
         // Check if post is alredy liked
-        if (!PostLike::where('liked_by', $user->id)->firstWhere('liked_post', $postId)) {
-            PostLike::create([
-                'liked_by' => $user->id,
-                'liked_post' => $postId,
+        if (!PostReaction::where('reacted_by', $user->id)->firstWhere('reacted_post', $postId)) {
+            PostReaction::create([
+                'reacted_by' => $user->id,
+                'reacted_post' => $postId,
+                'reaction_type' => $reactionType,
             ]);
             $targetPost->likes++;
             $targetPost->save();
         }
         $targetPost['created_by'] = $targetUser;
         $targetPost['creator_level'] = $currentLevel;
-        $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
+        $targetPost['reacted'] = $this->isPostLiked($user, $targetPost);
         
         return $targetPost;
     }
 
-    public function unlikePost(Request $request) {
+    public function removePostReaction(Request $request) {
         $user = $request->user();
         $postId = $request["id"];
         $targetPost = Post::firstWhere('id', $postId);
-        $targetPostLike = PostLike::where('liked_by', $user->id)->firstWhere('liked_post', $postId);
+        $targetPostLike = PostReaction::where('reacted_by', $user->id)->firstWhere('reacted_post', $postId);
 
         // Get post owner
         $targetUser = $this->getPostOwner($targetPost);
@@ -240,17 +244,44 @@ class PostController extends Controller
         }
         $targetPost['created_by'] = $targetUser;
         $targetPost['creator_level'] = $currentLevel;
-        $targetPost['liked'] = $this->isPostLiked($user, $targetPost);
+        $targetPost['reacted'] = $this->isPostLiked($user, $targetPost);
         
         return $targetPost;
     }
 
+    public function getReactionsList(Request $request) {
+        $postId = $request["id"];
+        $reactions = PostReaction::where('reacted_post', $postId)->get();
+
+        $userController = new UserController();
+
+        $reactionsList = [];
+
+        foreach($reactions as $reaction) {
+            $reactedBy = $this->getReactionOwner($reaction);
+            array_push($reactionsList, [
+                'user' => [
+                    'name' => $reactedBy->name,
+                    'slug' => $reactedBy->slug,
+                    'level' => $userController->getUserLevel($reactedBy),
+                ],
+                'reaction_type' => $reaction['reaction_type']
+            ]);
+        }
+
+        return $reactionsList;
+    }
+
     public function isPostLiked($user, $post) {
-        return $targetPost['liked'] = (PostLike::where('liked_by', $user->id)->firstWhere('liked_post', $post->id)) ? true : false;
+        return $targetPost['reacted'] = (PostReaction::where('reacted_by', $user->id)->firstWhere('reacted_post', $post->id));
     }
 
     public function getPostOwner($post) {
         return User::firstWhere('id', $post->created_by);
+    }
+
+    public function getReactionOwner($reaction) {
+        return User::firstWhere('id', $reaction->reacted_by);
     }
 
     public function getPostInstanceById($id) {

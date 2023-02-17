@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
-use App\Models\PostLike;
+use App\Models\PostReaction;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Config;
@@ -27,7 +27,7 @@ class FeedController extends Controller
 
             $post['created_by'] = $targetUser;
             $post['creator_level'] = $currentLevel;
-            $post['liked'] = $postController->isPostLiked($user, $post);
+            $post['reacted'] = $postController->isPostLiked($user, $post);
         }
         return $posts;
     }

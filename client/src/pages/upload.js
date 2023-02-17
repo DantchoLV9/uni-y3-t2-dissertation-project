@@ -76,9 +76,6 @@ export default function Home() {
             setShowSecondStage(true)
         }
     }, [images])
-    useEffect(() => {
-        console.log(user)
-    }, [user])
     return (
         <>
             {user ? (
@@ -121,24 +118,36 @@ export default function Home() {
                                                 ? `Post Details`
                                                 : `Upload Image`}
                                         </h1>
-                                        <p>
-                                            {user.streak.last_upload === 0 &&
-                                                'Less than 24 hrs left'}
-                                            {user.streak.last_upload === 23 &&
-                                                'Less than 1 hour left'}
-                                            {user.streak.last_upload > 0 &&
-                                            user.streak.last_upload < 23
-                                                ? `Less than ${
-                                                      24 -
-                                                      user.streak.last_upload
-                                                  } hrs left`
-                                                : ''}
-                                            <span
-                                                className="bg-gray-200 rounded p-1 font-bold ml-2"
-                                                title="your points reward">
-                                                {user.streak.next_reward_points}
-                                            </span>
-                                        </p>
+                                        {user.streak.last_upload !== null &&
+                                        user.streak.next_reward_points !==
+                                            null ? (
+                                            <p>
+                                                {user.streak.last_upload ===
+                                                    0 &&
+                                                    'Less than 24 hrs left'}
+                                                {user.streak.last_upload ===
+                                                    23 &&
+                                                    'Less than 1 hour left'}
+                                                {user.streak.last_upload > 0 &&
+                                                user.streak.last_upload < 23
+                                                    ? `Less than ${
+                                                          24 -
+                                                          user.streak
+                                                              .last_upload
+                                                      } hrs left`
+                                                    : ''}
+                                                <span
+                                                    className="bg-gray-200 rounded p-1 font-bold ml-2"
+                                                    title="your points reward">
+                                                    {
+                                                        user.streak
+                                                            .next_reward_points
+                                                    }
+                                                </span>
+                                            </p>
+                                        ) : (
+                                            ''
+                                        )}
                                     </div>
                                     {showSecondStage ? (
                                         <div className="flex flex-col gap-3">
