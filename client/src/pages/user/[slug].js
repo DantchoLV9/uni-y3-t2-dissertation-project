@@ -14,7 +14,7 @@ const UserProfilePage = () => {
     const router = useRouter()
     const slug = router.query.slug
     const [userProfile, setUserProfile] = useState({})
-    const [userPosts, setUserPosts] = useState([])
+    const [userPosts, setUserPosts] = useState(null)
     const [currentLevelColor, setCurrentLevelColor] = useState('gray-200')
     const [currentLevelPercentage, setCurrentLevelPercentage] = useState(0)
     useEffect(async () => {
@@ -72,10 +72,10 @@ const UserProfilePage = () => {
                         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col-reverse sm:flex-row justify-center items-start gap-3">
                             <div
                                 className={`w-full ${
-                                    userPosts.length > 0 &&
+                                    userPosts?.length > 0 &&
                                     'grid grid-cols-2 lg:grid-cols-3 gap-3'
                                 }`}>
-                                {userPosts.length > 0 ? (
+                                {userPosts?.length > 0 ? (
                                     userPosts.map(post => {
                                         return (
                                             <Link
@@ -105,7 +105,7 @@ const UserProfilePage = () => {
                                                         <div className="flex justify-center items-center">
                                                             <div className="flex flex-col justify-center items-center">
                                                                 <p className="text-white text-xl font-bold">
-                                                                    Likes
+                                                                    Reactions
                                                                 </p>
                                                                 <p className="text-white text-xl font-bold">
                                                                     {post.likes}
@@ -120,7 +120,9 @@ const UserProfilePage = () => {
                                 ) : (
                                     <div className="w-full">
                                         <h2 className="font-bold text-2xl w-full text-gray-600 text-center">
-                                            No posts by {user.name} yet
+                                            {userPosts === null
+                                                ? 'Loading'
+                                                : `No posts by ${userProfile.name} yet`}
                                         </h2>
                                     </div>
                                 )}
