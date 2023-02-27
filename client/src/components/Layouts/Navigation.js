@@ -77,9 +77,11 @@ const Navigation = ({ user }) => {
                             <DropdownLink href={`/followed`}>
                                 Followed Accounts
                             </DropdownLink>
+                            {user.gamification &&
                             <DropdownLink href={`/levels`}>
                                 Levels Guide
                             </DropdownLink>
+                            }
                             {/* Authentication */}
                             <DropdownButton onClick={logout}>
                                 Logout
@@ -167,9 +169,11 @@ const Navigation = ({ user }) => {
                             <ResponsiveNavLink href={`/followed`}>
                                 Followed Accounts
                             </ResponsiveNavLink>
+                            {user.gamification &&
                             <ResponsiveNavLink href={`/levels`}>
                                 Levels Guide
                             </ResponsiveNavLink>
+                            }
                             {/* Authentication */}
                             <ResponsiveNavButton onClick={logout}>
                                 Logout
