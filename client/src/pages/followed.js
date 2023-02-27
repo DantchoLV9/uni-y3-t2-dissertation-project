@@ -56,7 +56,7 @@ export default function Followed() {
                                                           className="mt-2 flex justify-between items-center">
                                                           <div className="flex items-center gap-2">
                                                               <div
-                                                                  className={`flex-shrink-0 border-2 border-${followedUser.user.color} rounded-full p-1.5`}>
+                                                                  className={`flex-shrink-0 ${user.gamification && "border-2"} border-${followedUser.user.color} rounded-full p-1.5`}>
                                                                   <svg
                                                                       className="h-6 w-6 fill-current text-gray-600"
                                                                       xmlns="http://www.w3.org/2000/svg"
