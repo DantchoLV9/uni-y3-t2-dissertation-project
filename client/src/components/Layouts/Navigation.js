@@ -77,10 +77,10 @@ const Navigation = ({ user }) => {
                             <DropdownLink href={`/followed`}>
                                 Followed Accounts
                             </DropdownLink>
-                            {user.gamification &&
+                            {user.gamification ? (
                             <DropdownLink href={`/levels`}>
                                 Levels Guide
-                            </DropdownLink>
+                            </DropdownLink> ) : ""
                             }
                             {/* Authentication */}
                             <DropdownButton onClick={logout}>
@@ -169,10 +169,10 @@ const Navigation = ({ user }) => {
                             <ResponsiveNavLink href={`/followed`}>
                                 Followed Accounts
                             </ResponsiveNavLink>
-                            {user.gamification &&
+                            {user.gamification ? (
                             <ResponsiveNavLink href={`/levels`}>
                                 Levels Guide
-                            </ResponsiveNavLink>
+                            </ResponsiveNavLink> ) : ""
                             }
                             {/* Authentication */}
                             <ResponsiveNavButton onClick={logout}>
