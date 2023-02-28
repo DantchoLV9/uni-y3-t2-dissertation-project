@@ -133,7 +133,8 @@ export default function Home() {
                                                 ? `Post Details`
                                                 : `Upload Image`}
                                         </h1>
-                                        {user.streak.last_upload !== null &&
+                                        {user.gamification &&
+                                        user.streak.last_upload !== null &&
                                         user.streak.next_reward_points !==
                                             null ? (
                                             <p>
