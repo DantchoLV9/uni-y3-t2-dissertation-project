@@ -306,6 +306,7 @@ const PostCard = ({ user, post, page = false }) => {
                             <Link href={`/post/${postContent.slug}`}>
                                 <a target="_blank" title="Open in new tab">
                                     <img
+                                        className="min-w-full"
                                         loading="lazy"
                                         src={`${serverUrl}/user_uploads/${postContent.scroll_feed_img}`}
                                     />
