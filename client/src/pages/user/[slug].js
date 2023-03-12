@@ -105,7 +105,7 @@ const UserProfilePage = () => {
     return (
         <>
             {user ? (
-                <AppLayout pageTitle={`${user.name}'s Profile`}>
+                <AppLayout pageTitle={`${userProfile.name}'s Profile`}>
                     <div className="py-12">
                         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col-reverse sm:flex-row justify-center items-start gap-3">
                             <div
