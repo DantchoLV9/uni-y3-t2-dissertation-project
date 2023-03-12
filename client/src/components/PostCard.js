@@ -574,7 +574,6 @@ const PostCard = ({ user, post, page = false }) => {
                                             getPostComments={getPostComments}
                                             user={user}
                                             comment={comment}
-                                            currentLevelColor={currentLevelColor}
                                         />
                                     )
                                 })}
