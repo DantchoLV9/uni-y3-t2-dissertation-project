@@ -7,17 +7,17 @@ const AuthCard = ({ logo, displayDisabledMsg, children }) => {
     return (
         <>
             {/* Disabled cool background image during data collection */}
-            {/* <div className="absolute top-0 left-0 w-full h-full bg-no-repeat -z-10 flex overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full bg-no-repeat -z-10 flex overflow-hidden">
                 <img
                     className="w-2/5 h-full object-cover hidden sm:inline-block"
                     src={cameraImage.src}
                 />
                 <div className="sm:left-1/3 sm:-skew-x-6 absolute w-full h-full overflow-hidden bg-gray-100 shadow-2xl"></div>
-            </div> */}
-            {/* This is the temp variant of the background (Delete after switching back to image) */}
-            <div className="absolute top-0 left-0 w-full h-full bg-no-repeat -z-10 flex overflow-hidden">
-                <div className="absolute w-full h-full overflow-hidden bg-gray-100 shadow-2xl"></div>
             </div>
+            {/* This is the temp variant of the background (Delete after switching back to image) */}
+            {/* <div className="absolute top-0 left-0 w-full h-full bg-no-repeat -z-10 flex overflow-hidden">
+                <div className="absolute w-full h-full overflow-hidden bg-gray-100 shadow-2xl"></div>
+            </div> */}
             <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
                 <div>{logo}</div>
 
